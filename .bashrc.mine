@@ -1,0 +1,135 @@
+#!/bin/bash
+
+set -o vi
+os=`uname`;
+platform=`uname -m`;
+LC_CTYPE=en_US.UTF-8
+LC_ALL=en_US.UTF-8
+
+# Experiment to see if using -v reduces the 'ls twitch'
+type -P ln &>/dev/null && alias ln="ln -v"
+type -P chmod &>/dev/null && alias chmod="chmod -v"
+type -P chown &>/dev/null && alias chown="chown -v"
+type -P cp &>/dev/null && alias cp="cp -v"
+
+type -P abcde &>/dev/null && alias abcde="abcde -x $*"
+type -P indent &>/dev/null && alias indent="indent -bli2 -br -ce -cli2 -i2 -bc"
+type -P mkisofs &>/dev/null && alias mkisofs="mkisofs -r"
+type -P figlet &>/dev/null && alias figlet="figlet -f roman"
+type -P netstat &>/dev/null && alias netstat-anp='netstat -anp'
+type -P rdesktop &>/dev/null && alias rdesktop='rdesktop -0 -u administrator -g 1400x850'
+type -P md5sum &>/dev/null && alias passwd-gen='echo $RANDOM | md5sum | cut -b $((($RANDOM % 5) + 1))-$((($RANDOM % 5) + 27))'
+type -P md5 &>/dev/null && alias passwd-gen='echo $RANDOM | md5 | cut -b $((($RANDOM % 5) + 1))-$((($RANDOM % 5) + 27))'
+type -P setxkbmap &>/dev/null && alias dvorak='echo setxkbmap dvorak'
+type -P setxkbmap &>/dev/null && alias querty='echo setxkbmap us'
+type -P virsh &>/dev/null && alias virsh='virsh --connect qemu:///system'
+alias invoices='find /home/moquist/docs/majen.net-documents/clients/ | grep invoice  | sed 's/^.*invoice-//' | sort -n | tail -n 10'
+
+alias box="source /usr/local/bin/box"
+
+export HISTSIZE=4000
+export HISTFILESIZE=4000
+
+export DEBFULLNAME="Matt Oquist"
+export DEBEMAIL="moquist@majen.net"
+
+# PROMPT
+# ------
+
+# This is the default Gentoo prompt, except that if we're not the
+# logged-in user, put the user in the prompt.
+#
+# These colors can be customized just by changing the following
+# variables in .bashrc.mine.  Here's a quick color table for
+# reference:
+#
+#    0 Reset (default color)
+#   30 Black
+#   31 Red
+#   32 Green
+#   33 Yellow
+#   34 Blue
+#   35 Purple
+#   36 Cyan
+#   37 White/Gray
+#
+
+root_prompt_color1=31; root_prompt_color2=34
+user_prompt_color1=32; user_prompt_color2=34
+other_prompt_color1=32; other_prompt_color2=34
+
+H=`hostname -f`
+if [ "$EUID" = 0 ]; then
+  PS1='\[\033[01;${root_prompt_color1}m\]'
+  PS1="$PS1"'\H \[\033[01;${root_prompt_color2}m\]\w \$ \[\033[00m\]'
+elif [ "$USER" = "${HOME##*/}" ]; then
+  PS1='\[\033[01;${user_prompt_color1}m\]'
+  #PS1="$PS1"'\H \[\033[01;${user_prompt_color2}m\]\W \$ \[\033[00m\]'
+  PS1="$PS1"'${H} \[\033[01;${user_prompt_color2}m\]\W \$ \[\033[00m\]'
+else
+  echo poser2
+  PS1='\[\033[01;${other_prompt_color1}m\]'
+  PS1="$PS1"'\u@\H \[\033[01;${other_prompt_color2}m\]\w \$ \[\033[00m\]'
+fi
+export PS1
+
+export EDITOR=vim
+
+# set default printer
+#unset PRINTER
+#[ -n "`type -P lpstat`" ] && export PRINTER=`lpstat -a 2>/dev/null| head -n1 | awk '{print $1}'`
+
+# add stuff to my path
+export PATH=~/bin:~/local/bin/:/sbin/:/usr/sbin/:$PATH
+export PATH=$PATH:/usr/local/bin
+
+type -P xterm &>/dev/null && alias xterm="xterm +sb -bdc -bc -bcn 500 -bcf 500 -reverse $XTERM_FONT"
+#type -P emacs &>/dev/null && alias emacs="emacs -nw"
+type -P figlet &>/dev/null && alias figlet="figlet -f roman"
+type -P exuberant-ctags &>/dev/null && alias ctags=exuberant-ctags
+type -P aspell &>/dev/null && alias s='aspell -a <<<'
+type -P cdrecord &>/dev/null && alias cdrecord="cdrecord -eject -tao driveropts=burnfree"
+type -P mpage &>/dev/null && alias mpage="mpage -bletter"
+type -P dstat &>/dev/null && alias dstat-wide="dstat -tyspnmligdc"
+type -P date &>/dev/null && alias date-unixts="echo 'date -d @<timestamp>'"
+type -P php &>/dev/null && alias php-l='find . | grep "\(php\|html\)$" | xargs -Ifoo php -l foo'
+type -P php &>/dev/null && alias php-v="php -e -d display_errors=1 -d log_errors=1 -d 'error_reporting=E_ALL&E_STRICT' -d html_errors=0 -c /etc/php5/apache2/php.ini"
+#type -P php &>/dev/null && alias php="php -d display_errors=0 -d log_errors=0 -d html_errors=0 -c /etc/php5/apache2/php.ini"
+type -P mysqldump &>/dev/null && alias mysqldump="mysqldump --skip-extended-insert"
+type -P bzr &>/dev/null && alias bzr="LC_ALL=C bzr"
+#type -P man &>/dev/null && alias man="LC_ALL=C man"
+type -P lintian &>/dev/null && alias lintian="LC_ALL=C lintian"
+
+type -P vi &>/dev/null && alias vi="LC_ALL=C vi"
+#type -P vim &>/dev/null && alias vim="LC_ALL=C vim" && alias vi="LC_ALL=C vim"
+type -P gvim &>/dev/null && alias gvim="gvim -reverse"
+
+type -P git &>/dev/null && {
+    git config --global user.name "Matt Oquist"
+    git config --global user.email "moquist@majen.net"
+    git config --path core.pager "less -FXRS"
+}
+
+export LESS=-isrXF
+
+mpc_bashrc="$HOME/.bashrc.mpc"
+[ -f "$mpc_bashrc" ] && source $mpc_bashrc
+bashrc_local="$HOME/.bashrc.local.${HOSTNAME}"
+[ -f "$bashrc_local" ] && source $bashrc_local || touch $bashrc_local
+
+#[ -f "/etc/motd" ] && clear && cat /etc/motd
+
+function abbreviate_path {
+  h=~
+  p=`echo $1 | sed 's#'$h'#~#' | sed 's#/# #g'`
+  echo $p
+}
+
+# http://www-128.ibm.com/developerworks/linux/library/l-keyc2/
+if type -P keychain &>/dev/null; then
+    allkeys="$HOME/.ssh/id_rsa"
+    keys=
+    for key in $allkeys; do [ -f "$key" ] && keys="${keys} $key "; done
+    eval $(keychain --nogui --eval $keys)
+fi
+

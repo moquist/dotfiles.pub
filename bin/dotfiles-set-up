@@ -1,0 +1,14 @@
+#!/bin/bash
+
+cd
+
+repo=.dotfiles.pub
+
+for item in bin '.bash*' '.vim*' .tmux.conf .inputrc; do
+    ln -vsf ~/$repo/$item ~/
+done
+
+ln -vsf ~/$repo/.lein/profiles.clj ~/.lein/
+mkdir -p ~/.git
+ln -vsf ~/$repo/git-config ~/.git/config
+
