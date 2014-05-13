@@ -1,0 +1,19 @@
+set editing-mode vi
+set bell-style visible
+set show-all-if-ambiguous on
+set page-completions off
+set completion-query-items 500
+Control-o: operate-and-get-next
+Control-l: clear-screen
+
+$if Bash
+    Space: magic-space
+    "\e[A": history-search-backward
+    "\e[B": history-search-forward
+$else
+    # Mainly for 'lein repl'
+    # Would be better to handle this more smoothly...
+    "\M-p": history-search-backward
+    "\M-n": history-search-forward
+$endif
+
