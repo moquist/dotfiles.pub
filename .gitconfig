@@ -1,0 +1,29 @@
+[user]
+	name = Matt Oquist
+	email = moquist@majen.net
+
+[core]
+	pager = less -FXRS
+
+[color]
+    branch = auto
+    diff = auto
+    status = auto
+
+[alias]
+    pr = pull --rebase
+    st = status
+    ci = commit
+    log1 = log --pretty=oneline --decorate
+
+[merge]
+	tool = vimdiff
+
+#[diff]
+#    external = git_diff_wrapper
+#[pager]
+#    diff =
+[diff]
+	tool = vimdiff
+[push]
+	default = matching

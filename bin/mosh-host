@@ -1,0 +1,8 @@
+#!/bin/bash
+
+start=`date`
+remote_host=`basename $0`
+if ! mosh $remote_host -- $*; then
+    echo from $start to
+    date
+fi
