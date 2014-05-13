@@ -4,9 +4,12 @@ cd
 
 repo=.dotfiles.pub
 
-for item in bin.pub '.bash*' '.vim*' .tmux.conf .inputrc .gitconfig; do
+for item in bin.pub .abcde.conf .weechat '.bash*' '.vim*' .tmux.conf .inputrc; do
     ln -vsf ~/$repo/$item ~/
 done
+
+ln -vsf ~/$repo/.gitconfig ~/
+ln -vsf ~/$repo/.gitignore ~/
 
 mkdir -p ~/.lein
 ln -vsf ~/$repo/.lein/profiles.clj ~/.lein/

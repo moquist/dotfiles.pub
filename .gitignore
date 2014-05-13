@@ -1,0 +1,11 @@
+viminf*
+*mp3
+.bzr**
+.emacs.d/.smex-items
+.emacs.d/places
+.emacs.d/auto-save-list/**
+.emacs.d/backups/**
+.emacs.d/repl-history
+.vim/.netrwhist
+.emacs.d/elpa/archives/marmalade/archive-contents**
+.weechat/logs/**
