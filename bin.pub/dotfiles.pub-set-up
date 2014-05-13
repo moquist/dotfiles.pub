@@ -8,6 +8,7 @@ for item in bin.pub '.bash*' '.vim*' .tmux.conf .inputrc .gitconfig; do
     ln -vsf ~/$repo/$item ~/
 done
 
+mkdir -p ~/.lein
 ln -vsf ~/$repo/.lein/profiles.clj ~/.lein/
 
 mkdir -p ~/.emacs.d
