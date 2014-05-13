@@ -1,0 +1,3 @@
+#!/bin/bash
+
+mpc del `mpc | grep playing | sed 's/^.*#//' | sed 's#/.*$##'`
