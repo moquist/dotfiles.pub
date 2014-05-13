@@ -12,3 +12,6 @@ ln -vsf ~/$repo/.lein/profiles.clj ~/.lein/
 mkdir -p ~/.git
 ln -vsf ~/$repo/git-config ~/.git/config
 
+mkdir -p ~/.emacs.d
+ln -vsf ~/$repo/.emacs.d/init.el ~/.emacs.d/
+
