@@ -1,0 +1,21 @@
+#!/bin/bash
+
+RSYNC="rsync -vr --no-perms --size-only"
+SRC=/home/moquist/mp3s/
+
+#james:/Volumes/KINGSTON/
+DST=$1
+
+[[ -z "$DST" ]] && echo error: no destination && exit 1
+
+subsrcs="mhaj sacred sermons jazz/bb-king jazz/bradley-sowash jazz/cab-calloway jazz/caravan-palace jazz/dave-brubeck jazz/eva-cassidy jazz/fats-waller jazz/jacky-terrasson jazz/louis-armstrong jazz/miles-davis jazz/richard-hayman-and-his-orchestra jazz/scott_joplin jazz/ted-nash-and-his-orchestra jazz/the-black-keys jazz/the-swingin-swamis jazz/us3 jazz/vince-guaraldi jazz/wade-in-the-water-ramsey-lewis.mp3"
+
+cd $SRC
+$RSYNC --delete -n $subsrcs $DST/
+
+for subsrc in $subsrcs; do
+    $RSYNC $SRC/$subsrc $DST/
+done
+
+
+
