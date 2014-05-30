@@ -148,3 +148,9 @@ bindsym $mod+r mode "resize"
 bar {
         status_command i3status
 }
+
+# switch to natural scrolling
+exec_always --no-startup-id xinput set-button-map 15 1 2 3 5 4 6 7 8 9 10 11 12
+exec_always --no-startup-id xinput set-button-map 11 1 2 3 5 4 6 7
+
+force_focus_wrapping yes
