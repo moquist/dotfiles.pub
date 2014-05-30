@@ -2,8 +2,9 @@
 ;; a vimmy clojurer.
 
 (require 'package)
-(add-to-list 'package-archives
-             '("marmalade" . "http://marmalade-repo.org/packages/") t)
+(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                         ("marmalade" . "http://marmalade-repo.org/packages/")
+                         ("melpa" . "http://melpa.milkbox.net/packages/")))
 (package-initialize)
 
 (unless (package-installed-p 'cider)
@@ -16,7 +17,8 @@
   (package-install 'smex)
   (package-install 'better-defaults)
   (package-install 'paredit)
-  (package-install 'cider))
+  (package-install 'cider)
+  )
 
 (remove-hook 'clojure-mode-hook 'esk-pretty-fn)
 (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
