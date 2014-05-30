@@ -104,11 +104,11 @@ type -P vi &>/dev/null && alias vi="LC_ALL=C vi"
 #type -P vim &>/dev/null && alias vim="LC_ALL=C vim" && alias vi="LC_ALL=C vim"
 type -P gvim &>/dev/null && alias gvim="gvim -reverse"
 
-type -P git &>/dev/null && {
-    git config --global user.name "Matt Oquist"
-    git config --global user.email "moquist@majen.net"
-    git config --path core.pager "less -FXRS"
-}
+#type -P git &>/dev/null && {
+#    git config --global user.name "Matt Oquist"
+#    git config --global user.email "moquist@majen.net"
+#    git config --path core.pager "less -FXRS"
+#}
 
 export LESS=-isrXF
 
