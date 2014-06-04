@@ -9,3 +9,4 @@ viminf*
 .vim/.netrwhist
 .emacs.d/elpa/archives/marmalade/archive-contents**
 .weechat/logs/**
+.weechat/weechat.log
