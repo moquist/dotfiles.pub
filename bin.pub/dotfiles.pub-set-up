@@ -4,7 +4,7 @@ cd
 
 repo=.dotfiles.pub
 
-for item in bin.pub .abcde.conf .weechat '.bash*' '.vim*' .tmux.conf .inputrc; do
+for item in bin.pub .abcde.conf .weechat '.bash*' '.vim*' .tmux.conf .inputrc .emacs.d; do
     ln -vsf ~/$repo/$item ~/
 done
 
@@ -14,6 +14,6 @@ ln -vsf ~/$repo/.gitignore ~/
 mkdir -p ~/.lein
 ln -vsf ~/$repo/.lein/profiles.clj ~/.lein/
 
-mkdir -p ~/.emacs.d
-ln -vsf ~/$repo/.emacs.d/init.el ~/.emacs.d/
+#mkdir -p ~/.emacs.d
+#ln -vsf ~/$repo/.emacs.d/init.el ~/.emacs.d/
 
