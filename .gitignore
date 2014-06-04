@@ -10,3 +10,4 @@ viminf*
 .emacs.d/elpa/archives/marmalade/archive-contents**
 .weechat/logs/**
 .weechat/weechat.log
+.emacs.d/elpa/archives
