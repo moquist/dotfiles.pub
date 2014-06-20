@@ -150,7 +150,7 @@ bar {
 }
 
 # switch to natural scrolling
-exec_always --no-startup-id xinput set-button-map 15 1 2 3 5 4 6 7 8 9 10 11 12
-exec_always --no-startup-id xinput set-button-map 11 1 2 3 5 4 6 7
+exec_always --no-startup-id xinput set-button-map $(xinput --list --id-only 'SynPS/2 Synaptics TouchPad') 1 2 3 5 4 6 7 8 9 10 11 12
+exec_always --no-startup-id xinput set-button-map $(xinput --list --id-only 'Microsoft Microsoft 3-Button Mouse with IntelliEye(TM)') 1 2 3 5 4 6 7
 
 force_focus_wrapping yes
