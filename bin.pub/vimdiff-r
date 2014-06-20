@@ -1,0 +1,8 @@
+#!/usr/bin/perl -w
+
+foreach $line (`diff -qr \"$ARGV[0]\" \"$ARGV[1]\"`) {
+    chomp $line;
+    if ($line =~ /^Files (.*) and (.*) differ$/) {
+        system("vimdiff \"$1\" \"$2\"");
+    }
+}

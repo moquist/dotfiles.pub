@@ -11,3 +11,4 @@ viminf*
 .weechat/logs/**
 .weechat/weechat.log
 .emacs.d/elpa/archives
+.bash_history
