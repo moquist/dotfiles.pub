@@ -39,7 +39,7 @@ if (defined($opt_c)) { $changes_only = 1; }
 if (defined($opt_n)) { $newline = "\n"; }
 if (defined($opt_q)) { $q = "\""; }
 
-require "/home/moquist/bin/mungefilename.pm";
+require "/home/moquist/bin.pub/mungefilename.pm";
 foreach my $fn (<STDIN>) {
     chomp($fn);
     $new_fn = &mungefilename($fn);

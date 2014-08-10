@@ -1,0 +1,10 @@
+#!/bin/bash
+# Turn a .tex file into a PDF, and open it
+
+texfile=`echo $1 | sed 's/.tex$//'`
+cp $texfile.tex $texfile-wc.tex
+latex-wordcount.sh $texfile-wc.tex
+pdflatex $texfile-wc.tex
+pdflatex $texfile-wc.tex
+mv $texfile-wc.pdf $texfile.pdf
+open-matt $texfile.pdf
