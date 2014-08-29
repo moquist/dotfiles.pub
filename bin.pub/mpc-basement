@@ -1,5 +1,3 @@
 #!/bin/bash
 
-export MPD_PORT=6601
-export MPD_HOST=aristotle
-mpc $@
+MPD_PORT=6601 MPD_HOST=aristotle mpc $@
