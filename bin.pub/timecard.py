@@ -20,6 +20,8 @@ first_start_str = ""
 stoptime = 0
 
 for line in fileinput.input():
+    if (re.match("^ +", line)):
+        continue
     (state, datestr) = re.split(": ", line.rstrip(), maxsplit=1)
 
     state = state.lower()
