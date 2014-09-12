@@ -84,7 +84,7 @@ export PATH=~/bin:~/bin.pub:~/local/bin/:/sbin/:/usr/sbin/:$PATH
 export PATH=$PATH:/usr/local/bin
 
 type -P xterm &>/dev/null && alias xterm="xterm +sb -bdc -bc -bcn 500 -bcf 500 -reverse $XTERM_FONT"
-#type -P emacs &>/dev/null && alias emacs="emacs -nw"
+type -P emacs &>/dev/null && alias emacs="emacs -nw"
 type -P figlet &>/dev/null && alias figlet="figlet -f roman"
 type -P exuberant-ctags &>/dev/null && alias ctags=exuberant-ctags
 type -P aspell &>/dev/null && alias s='aspell -a <<<'
@@ -127,7 +127,7 @@ function abbreviate_path {
 
 # http://www-128.ibm.com/developerworks/linux/library/l-keyc2/
 if type -P keychain &>/dev/null; then
-    allkeys="$HOME/.ssh/id_rsa"
+    allkeys="$HOME/.ssh/*_rsa"
     keys=
     for key in $allkeys; do [ -f "$key" ] && keys="${keys} $key "; done
     eval $(keychain --nogui --eval $keys)

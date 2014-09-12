@@ -1,0 +1,108 @@
+#!/bin/bash
+
+[[ -z $1 ]] && echo submit a destination path && exit 1
+
+dest="$1"
+tmp="/tmp/"
+lockfile="/home/moquist/.all2mp3.lock"
+tmpfile="$tmp/all2mp3.`date +%s`"
+
+function lock
+{
+    echo $$ >> "$lockfile"
+    owner=`head -n1 "$lockfile"`
+    while [ "$$" != "$owner" ]; do
+        echo waiting on lockfile \($lockfile\)
+        sleep 1
+        echo $$ >> "$lockfile"
+        owner=`head -n1 "$lockfile"`
+    done
+}
+
+function unlock
+{
+    owner=`head -n1 "$lockfile"`
+    if [ "$$" != "$owner" ]; then
+        echo "attempted to unlock somebody else's lockfile"
+        exit 1
+    fi
+    rm "$lockfile"
+}
+
+ARTIST=
+ALBUM=
+TITLE=
+DATE=
+GENRE=
+TRACKNUMBER=
+
+mkdir -p "$tmp"
+
+for file in `find . * */* -type f | grep -i "m3u$\|ogg$\|flac$\|mp3$" | sed 's/ /__SPACE__/g'| grep "[A-Za-z]" | sort`; do
+    file=`echo $file | sed 's/__SPACE__/ /g'`
+    base=`basename "$file"`
+    dir=`dirname "$file"`
+    mkdir -p "$dest/$dir"
+
+    if [ "$base" != "${base%.ogg}" ]; then
+        continue
+        extract="ogg123 -d wav -f /$tmp/$base.wav"
+        newbase=`echo "$base" | sed 's/.ogg$//'`
+        ogginfo "$file" > $tmpfile
+        ARTIST=`grep ARTIST $tmpfile | awk -F= '{print $NF}'`
+        ALBUM=`grep ALBUM $tmpfile | awk -F= '{print $NF}'`
+        TITLE=`grep TITLE $tmpfile | awk -F= '{print $NF}'`
+        DATE=`grep DATE $tmpfile | awk -F= '{print $NF}'`
+        GENRE=`grep GENRE $tmpfile | awk -F= '{print $NF}' | awk -F/ '{print $1}'`
+        TRACKNUMBER=`grep TRACKNUMBER $tmpfile | awk -F= '{print $NF}'`
+    elif [ "$base" != "${base%.flac}" ]; then
+        extract="flac -d -f -o /$tmp/$base.wav"
+        newbase=`echo "$base" | sed 's/.flac$//'`
+        metaflac --list "$file" > $tmpfile
+        ARTIST=`grep ARTIST $tmpfile | awk -F= '{print $NF}'`
+        ALBUM=`grep ALBUM $tmpfile | awk -F= '{print $NF}'`
+        TITLE=`grep TITLE $tmpfile | awk -F= '{print $NF}'`
+        DATE=`grep DATE $tmpfile | awk -F= '{print $NF}'`
+        GENRE=`grep GENRE $tmpfile | awk -F= '{print $NF}' | awk -F/ '{print $1}'`
+        TRACKNUMBER=`grep TRACKNUMBER $tmpfile | awk -F= '{print $NF}'`
+    elif [ "$base" != "${base%.mp3}" -o "$base" != "${base%.m3u}" ]; then
+        diff "$dir/$base" "$dest/$dir/" || cp -v "$dir/$base" "$dest/$dir/"
+        continue
+    fi
+
+    lock
+    if [ -f "/$tmp/$base.wav" ]; then
+        echo SKIPPINGa $file
+        unlock
+        continue
+    fi
+    if [ -f "$dest/$dir/$newbase.mp3" ]; then
+        srctime=`date +%s -r "$dir/$base"`
+        dsttime=`date +%s -r "$dest/$dir/$newbase.mp3"`
+        if [ $dsttime -ge $srctime ]; then
+            echo SKIPPINGb $file
+            unlock
+            continue
+        fi
+    fi
+    touch "/$tmp/$base.wav"
+    unlock
+
+    echo PROCESSING $file
+    if [ "Christmas" == "$GENRE" ]; then GENRE="Big Band"; fi
+    if [ "Folk-Rock" == "$GENRE" ]; then GENRE="Folk"; fi
+    if [ "Symphony Metal" == "$GENRE" ]; then GENRE="Heavy Metal"; fi
+    if [ "Speed" == "$GENRE" ]; then GENRE="Heavy Metal"; fi
+    if [ "Klassik" == "$GENRE" ]; then GENRE="Classical"; fi
+    if [ "Soundtrack (Orchestral)" == "$GENRE" ]; then GENRE="Soundtrack"; fi
+    if [ "Alt. Rock, Britpop" == "$GENRE" ]; then GENRE="Alternative"; fi
+    if [ "Books & Spoken" == "$GENRE" ]; then GENRE="Comedy"; fi
+    if [ "World" == "$GENRE" ]; then GENRE="Comedy"; fi
+    if [ "Inspirational" == "$GENRE" ]; then GENRE="Comedy"; fi
+    if [ "Holiday" == "$GENRE" ]; then GENRE="Classical"; fi
+    if [ "misc" == "$GENRE" ]; then GENRE="Soundtrack"; fi
+    $extract "$dir/$base" >/dev/null
+    lame --ta "$ARTIST" --tl "$ALBUM" --ty "$DATE" --tn "$TRACKNUMBER" --tg "$GENRE" --tt "$TITLE" "/$tmp/$base.wav" "$dest/$dir/$newbase.mp3" > /dev/null
+    rm -f "/$tmp/$base.wav"
+
+done

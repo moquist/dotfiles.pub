@@ -1,5 +1,5 @@
 viminf*
-*mp3
+*.mp3
 .bzr**
 .emacs.d/.smex-items
 .emacs.d/places
@@ -11,3 +11,4 @@ viminf*
 .weechat/logs/**
 .weechat/weechat.log
 .emacs.d/elpa/archives
+.bash_history

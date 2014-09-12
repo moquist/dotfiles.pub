@@ -1,0 +1,18 @@
+#!/bin/bash
+
+source ~/.abcde.conf
+
+echo This operates on everything under your CURRENT DIRECTORY.
+echo 'CTRL-C to cancel, Enter to continue.'
+read sure
+
+for file in `find . | sed 's/ /__SPACE__/g' | sort -r`; do
+  f=`echo $file | sed 's/__SPACE__/ /g'`;
+  dir=`dirname "$f"`;
+  base=`basename "$f"`;
+  bnew=`mungefilename "$base"`;
+  if [ "$base" != "$bnew" ]; then
+    echo mv "$dir/$base" "$dir/$bnew";
+    mv "$dir/$base" "$dir/$bnew";
+  fi
+done
