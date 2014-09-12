@@ -4,7 +4,7 @@ cd
 
 repo=.dotfiles.pub
 
-for item in bin.pub .abcde.conf .weechat '.bash*' '.vim*' .tmux.conf .inputrc; do
+for item in bin.pub .abcde.conf .weechat '.bash*' '.vim*' .profile .tmux.conf .inputrc; do
     ln -vsf ~/$repo/$item ~/
 done
 
