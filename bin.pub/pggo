@@ -1,4 +1,10 @@
 #!/bin/bash
+# Create a symlink from the name of your database to this file, and you can use
+# the name of your database as an abbreviation for "psql etc. etc.
+# your_database".
+# E.g.:
+# $ ln -s pggo my_fancy_db
+# $ echo "select 1" | my_fancy_db
 
 function usage {
     echo "Usage: " $(basename $0) " [-h | --help] [-c | --csv] [-- <psql options>]
