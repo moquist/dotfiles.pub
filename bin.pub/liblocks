@@ -1,0 +1,174 @@
+# Provides 'lock' and 'unlock' functions for safe shell programming on Linux.
+# Copyright 2007 Matt Oquist <moquist@majen.net>
+# License: GPL 2 or latest
+#
+# Dependencies:
+#     /proc/ on contemporary Linux
+#
+# Example usages:
+# lockfile="/tmp/lockfile.lock"
+#
+# lock_simple "$lockfile"
+# echo "Only I can print this! Ha ha!"
+# unlock "$lockfile"
+#
+#
+# while ! lock "$lockfile" 120 1; do sleep 1; done
+# echo "I have two minutes before another instance can terminate me to get my lock."
+# unlock "$lockfile"
+#
+#
+# while ! lock "$lockfile" infinite infinite; do sleep 1; done
+# echo "I can run FOREVER without getting terminated by a proc that wants my lock."
+# unlock "$lockfile"
+#
+# if lock "$lockfile" infinite 1; then
+#       echo "Happy day!"
+# else
+#       echo Too bad, so sad. I got me no lockfile.
+#       echo I will run fortune to console myself.
+#       fortune
+# fi
+
+#####################################################################
+# Block until we get the lock.
+# maxruntime=infinite is assumed.
+function lock_simple {
+    lockfile="$1"
+    [ -z "$lockfile" ] && {
+        echo "$FUNCNAME: No lockfile specified."
+        return 1
+    }
+
+    while ! lock "$lockfile" infinite infinite; do sleep 1; done
+}
+
+# Return true if we got the lock.
+# Return false if we didn't get the lock.
+function lock {
+    lockfile="$1"
+    maxruntime="$2" # In seconds with special case "infinite"
+    maxattempts="$3" # How many times will we try to get the lock before giving up?
+    [ -z "$lockfile" ] && { echo "$FUNCNAME: No lockfile specified."; return 1; }
+    [ -z "$maxruntime" ] && { echo "$FUNCNAME: No maxruntime specified."; return 1; }
+    [ -z "$maxattempts" ] && { echo "$FUNCNAME: No maxattempts specified."; return 1; }
+
+    attempt=0
+    mypid=$$
+    # Loop until we get the lockfile or return an error.
+    while true; do
+
+        if [ "$maxattempts" != 'infinite' -a $((attempt >= maxattempts)) -eq 1 ]; then
+            echo "$FUNCNAME: maxattempts ($maxattempts) exceeded"
+            return 1
+        fi
+
+        now=`date +%s`
+        echo $mypid $now >> "$lockfile"
+        otherpid=`head -n1 "$lockfile" | awk '{print $1}'`
+        then=`head -n1 "$lockfile" | awk '{print $2}'`
+
+        # Success!
+        if [ "$mypid" = "$otherpid" ]; then
+            return 0;
+        fi
+
+        # We got here, so some other instance of this script failed to delete
+        # its lockfile.
+
+        if [ ! -d "/proc/$otherpid" ]; then
+            # The other process doesn't exist now, so just remove the lockfile
+            # and try again.
+            echo "$FUNCNAME: removing stale lockfile"
+            rm -f "$lockfile"
+        else
+            if ! diff "/proc/$mypid/exe" "/proc/$otherpid/exe"; then
+                # Some other process (not a shell script, anyway) now has
+                # that PID.
+                # Remove the lockfile and try again.
+                echo "$FUNCNAME: removing really stale lockfile"
+                rm -f "$lockfile"
+            else
+                # The otherpid refers to another process that is at least
+                # running the correct executable...we therefore assume it's
+                # another instance of this script.
+                if [ "$maxruntime" = 'infinite' -o $(((now-maxruntime) < then)) -eq 1 ]; then
+                    # The other instance of this script is still within its
+                    # allowed maximum runtime.
+                    return 1
+                else
+                    # The other instance of this script has been running for too long.
+                    # Kill it.
+                    killother "$otherpid"
+
+                    # Remove the old lockfile.
+                    echo "$FUNCNAME: removing lockfile from slow process"
+                    rm -f "$lockfile"
+                fi
+            fi
+        fi
+
+        # Sleep a bit before attempting to lock again.
+        sleep 2
+
+        attempt=$((attempt++))
+    done
+}
+
+function unlock {
+    lockfile="$1"
+    [ -z "$lockfile" ] && echo "$FUNCNAME: No lockfile specified." && return 1
+
+    # Ensure we have the lock.
+    mypid=$$
+    otherpid=`head -n1 "$lockfile" | awk '{print $1}'`
+    if [ "$mypid" = "$otherpid" ]; then
+        rm -f "$lockfile"
+        return 0
+    fi
+
+    return 1
+}
+
+# Kill a process, attempting to wait the minimum amount of time to be polite AND
+# be sure everything dies.
+function killother {
+    otherpid="$1"
+
+    kidpids="`ps h -o pid --ppid "$otherpid"`"
+
+    kill "$otherpid"
+    sleep 1
+
+    if [ -d "/proc/$otherpid" ]; then
+        sleep 10
+        if [ -d "/proc/$otherpid" ]; then
+            echo "$FUNCNAME: Had to kill -9 an old process."
+            kill -9 "$otherpid"
+        fi
+    fi
+
+    for kidpid in $kidpids; do
+        if [ -d "/proc/$kidpid" ]; then
+            kill "$kidpid";
+        fi
+    done
+    sleep 1
+
+    kill9=
+    for kidpid in $kidpids; do
+        if [ -d "/proc/$kidpid" ]; then
+            kill9=true
+        fi
+    done
+
+    if [ x$kill9 != "x" ]; then
+        for kidpid in $kidpids; do
+            if [ -d "/proc/$kidpid" ]; then
+                echo "$FUNCNAME: Had to kill -9 an old process' child."
+                kill -9 "$kidpid";
+            fi
+        done
+    fi
+}
+
