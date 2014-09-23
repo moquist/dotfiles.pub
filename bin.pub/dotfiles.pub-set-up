@@ -11,9 +11,6 @@ done
 ln -vsf ~/$repo/.gitconfig ~/
 ln -vsf ~/$repo/.gitignore ~/
 
-mkdir -p ~/.lein
-ln -vsf ~/$repo/.lein/profiles.clj ~/.lein/
-
 mkdir -p ~/.emacs.d
 ln -vsf ~/$repo/.emacs.d/init.el ~/.emacs.d/
 
