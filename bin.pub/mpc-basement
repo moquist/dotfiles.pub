@@ -1,3 +1,0 @@
-#!/bin/bash
-
-MPD_PORT=6601 MPD_HOST=aristotle mpc $@

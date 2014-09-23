@@ -1,0 +1,21 @@
+#!/bin/bash
+# Run a command with an exclusive lock
+#
+# Depends on /usr/local/bin/liblocks
+
+# Usage:
+# lock-exclusive <lockfile path> <command>
+
+. /usr/local/bin/liblocks
+
+[[ -z "$1" ]] && echo missing lockfile path && exit 1
+[[ -z "$2" ]] && echo missing command && exit 1
+
+lockfile="$1"
+shift 1
+
+if lock "$lockfile" infinite 1; then
+    $@
+    unlock "$lockfile"
+fi
+

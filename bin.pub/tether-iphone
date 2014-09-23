@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -x
+
+echo "First: sudo aptitude install ipheth-utils libimobiledevice-dev libimobiledevice-utils"
+echo "You might also need to unplug and plug in USB again, and/or turn Personal Hotspot off and back on, etc."
+idevicepair unpair && idevicepair pair
