@@ -25,8 +25,8 @@
 # if lock "$lockfile" infinite 1; then
 #       echo "Happy day!"
 # else
-#       echo Too bad, so sad. I got me no lockfile.
-#       echo I will run fortune to console myself.
+#       echo I did not get the lockfile.
+#       echo fortune may provide consolation.
 #       fortune
 # fi
 
