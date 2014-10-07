@@ -1,0 +1,41 @@
+#!/bin/bash
+# Put this in your $PATH and call it "clojure-repl", and (setq
+# clojure-inf-lisp-command "clojure-repl") if you're into the whole Emacs thing
+# and you want to use inferior-lisp.
+
+# Walk from $PWD up to /, looking for a .classpath file.
+# If found, cat its contents for capture.
+function find_dot_classpath {
+    local target_dir="$PWD"
+
+    local d="$target_dir"
+    while [[ "/" != $(command cd -P $d && \pwd) ]]; do
+        if [[ -f "$d/.classpath" ]]; then
+            >&2 echo "Project .classpath found! ($d/.classpath)"
+            cat "$d/.classpath"
+            break
+        fi
+        d="$d/.."
+    done
+}
+
+# Find the latest (sort -n) version of the clojure .jar in ~/.m2.
+function find_clojure_jar {
+    find ~/.m2 -name clojure*.jar | grep org/clojure/clojure/ | sort -n | tail -n1
+}
+
+# Put the classpath on stdout for capture.
+function get_classpath {
+    classpath="$(find_dot_classpath)"
+    if [[ -z "$classpath" ]]; then
+        classpath="$(find_clojure_jar)"
+        >&2 echo
+        >&2 echo "WARNING: No .classpath found, resorting to $classpath."
+        >&2 echo "         You may use 'lein classpath > .classpath' or 'cmma classpath > .classpath' to make a .classpath file for your project."
+        >&2 echo
+    fi
+    echo "$classpath"
+}
+
+echo Starting clojure.main...
+java -cp "$(get_classpath)" clojure.main -r
