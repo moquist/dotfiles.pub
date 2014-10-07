@@ -23,10 +23,6 @@
   ;; (package-install 'cider)
   )
 
-;; (setq inferior-lisp-program "/home/moquist/repl")
-;;(setq inferior-lisp-program "/home/moquist/bin.pub/cmma repl")
-;; (setq inferior-lisp-program ".repl")
-;; (setq inferior-lisp-program "lisp")
 ;;(setq inferior-lisp-load-command nil)
 (setq clojure-inf-lisp-command "clojure-repl")
 
