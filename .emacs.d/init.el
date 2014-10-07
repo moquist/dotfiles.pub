@@ -1,3 +1,6 @@
+;; Note on interactive setq:
+;; use M-:, which runs the command eval-expression
+
 ;; Self-installing/configuring. Nothing else needed to get emacs working for
 ;; a vimmy clojurer.
 
@@ -7,7 +10,7 @@
                          ("melpa" . "http://melpa-stable.milkbox.net/packages/")))
 (package-initialize)
 
-(unless (package-installed-p 'cider)
+(unless (package-installed-p 'evil)
   (package-refresh-contents)
   (package-install 'dash) 
   (package-install 'evil) 
@@ -17,18 +20,17 @@
   (package-install 'smex)
   (package-install 'better-defaults)
   (package-install 'paredit)
-  (package-install 'cider)
+  ;; (package-install 'cider)
   )
 
+;; (setq inferior-lisp-program "/home/moquist/repl")
+;;(setq inferior-lisp-program "/home/moquist/bin.pub/cmma repl")
+;; (setq inferior-lisp-program ".repl")
+;; (setq inferior-lisp-program "lisp")
+;;(setq inferior-lisp-load-command nil)
+(setq clojure-inf-lisp-command "clojure-repl")
+
 (remove-hook 'clojure-mode-hook 'esk-pretty-fn)
-(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
-(setq nrepl-hide-special-buffers t)
-;(setq cider-repl-display-in-current-window f)
-(setq cider-repl-wrap-history t)
-(setq cider-repl-history-size 4000) ; the default is 500
-(setq cider-repl-history-file "~/.emacs.d/repl-history")
-(setq cider-popup-stacktraces nil)
-(add-hook 'cider-repl-mode-hook 'paredit-mode)
 (add-hook 'clojure-mode-hook 'paredit-mode)
 
 (eval-after-load 'paredit '(define-key paredit-mode-map (kbd "M-)") 'paredit-forward-slurp-sexp))
