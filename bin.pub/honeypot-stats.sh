@@ -28,7 +28,8 @@ function usage {
                           dionaea_frequent_ips
                           dionaea_frequent_ipproto
                           dionaea_frequent_proto
-                          kippo_frequent_ips
+                          kippo_frequent_ips_attempts
+                          kippo_frequent_ips_successes
                           kippo_frequent_usernames
                           kippo_frequent_passwords
 
@@ -136,15 +137,31 @@ function dionaea_frequent_proto {
 
 # Kippo: List the most frequent IPs
 function kippo_frequent_ips {
-    echo
-    echo "======== ($FUNCNAME) Kippo: Most frequent connectors by IP address ========"
-    echo
+    indicator='login attempt'
+    if [[ $1 = "successes" ]]; then
+	indicator='root authenticated with keyboard-interactive'
+    fi
+
     cat $kippologs_dir/*.log* \
-        | grep 'login attempt' \
+        | grep "$indicator" \
         | grep -v $ignorehosts \
         | kippo_get_ipaddr \
         | tidy_sort_count \
         | $SUMMARIZE
+}
+
+function kippo_frequent_ips_attempts {
+    echo
+    echo "======== ($FUNCNAME) Kippo: Most frequent SSH attempts by IP address ========"
+    echo
+    kippo_frequent_ips attempts
+}
+
+function kippo_frequent_ips_successes {
+    echo
+    echo "======== ($FUNCNAME) Kippo: Most frequent SSH success by IP address ========"
+    echo
+    kippo_frequent_ips successes
 }
 
 # Kippo: List the most frequent usernames/passwords
@@ -179,7 +196,7 @@ function kippo_frequent_passwords {
 
 ############ do the work
 
-for f in dionaea_frequent_ips dionaea_frequent_ipproto dionaea_frequent_proto kippo_frequent_ips kippo_frequent_usernames kippo_frequent_passwords; do
+for f in dionaea_frequent_ips dionaea_frequent_ipproto dionaea_frequent_proto kippo_frequent_ips_attempts kippo_frequent_ips_successes kippo_frequent_usernames kippo_frequent_passwords; do
     if [[ $OPERATIONS = "all" || $OPERATIONS =~ $f ]]; then
         $f
     fi
