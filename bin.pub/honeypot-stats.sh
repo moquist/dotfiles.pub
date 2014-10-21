@@ -10,23 +10,29 @@ CONF=.honeypot-stats.conf
 # Default to listing the biggest/most frequent, etc.
 SUMMARIZE='tail -n 5'
 
-if [[ "$1" = "--verbose" ]]; then
-    SUMMARIZE=cat
-fi
-
 # Default to listing the most frequently-connected IPs
-OPERATIONS=frequent_ips
+OPERATIONS=dionaea_frequent_ips
 
 # Allow for defaults to be overwritten in conf
 [[ -f $HOME/$CONF ]] && . $HOME/$CONF
 
 ############ CLI parsing
 function usage {
-    echo "Usage: " $(basename $0) " [-h | --help] [-v | --verbose] [-o | --operations <frequent_ips,frequent_ipproto,frequent_proto>]
+    echo "Usage: " $(basename $0) " [-h | --help] [-v | --verbose] [-o | --operations <list of operations>]
     -c|--conf-sample  Print a sample ~/$CONF file.
     -h|--help         Print this help message.
     -v|--verbose      Do not limit output per operation.  (Default: tail -n 5)
-    -o|--operations   Perform the specified operations.  (Default: frequent_ips)
+    -o|--operations   Perform the specified operations.  (Default: dionaea_frequent_ips)
+                      Available operations include:
+                          all # runs all ops
+                          dionaea_frequent_ips
+                          dionaea_frequent_ipproto
+                          dionaea_frequent_proto
+                          kippo_frequent_ips
+                          kippo_frequent_usernames
+                          kippo_frequent_passwords
+
+                      For example, to do dionaea_frequent_ips and dionaea_frequent_proto: -o dionaea_frequent_ips,dionaea_frequent_proto
 
     Defaults can be overwritten in ~/$CONF.
     "
@@ -37,6 +43,9 @@ function confsample {
 # path to all dionaea bistream logs
 dionaealogs_dirs=/var/dionaea/bistreams/*/
 
+# path to kippo logs
+kippologs_dir=/var/kippo/log
+
 # grep regex to ignore hosts
 ignorehosts=\"192.168.0.0\"
 
@@ -44,7 +53,7 @@ ignorehosts=\"192.168.0.0\"
 # SUMMARIZE='tail -n 5'
 
 # default operation
-# OPERATIONS=frequent_ips
+# OPERATIONS=dionaea_frequent_ips
 "
 }
 
@@ -62,9 +71,18 @@ while true ; do
     esac
 done
 
-function get_proto_ipaddr {
+function dionaea_get_proto_ipaddr {
     # Grab the protocol name and IP address from the name of the bistream file.
+    # Yep, we're only doing IPv4 for now.
     sed 's/^\([^-]*\)-[0-9]\+-::ffff:\([^-]\+\)-.*$/\1 \2/'
+}
+
+function kippo_get_ipaddr {
+    awk -F, '{print $3}' | sed 's/].*$//'
+}
+
+function kippo_get_unpw {
+    sed 's#^.*login attempt \[\([^/]\+\)/\(.\+\)\].*$#\1 \2#'
 }
 
 function first {
@@ -74,62 +92,95 @@ function second {
     awk '{print $2}'
 }
 
+function tidy_sort_count {
+    grep . | sort | uniq -c | sort -n
+}
+
 ############ stats functions
-# List the most oft-connected IP addresses
-function frequent_ips {
+# Dionaea: List the most oft-connected IP addresses
+function dionaea_frequent_ips {
     echo
-    echo ======== Most frequent connectors by IP address ========
+    echo "======== ($FUNCNAME) Dionaea: Most frequent connectors by IP address ========"
     ls $dionaealogs_dirs \
         | grep -v $ignorehosts \
-        | get_proto_ipaddr \
+        | dionaea_get_proto_ipaddr \
         | second \
-        | grep . \
-        | sort \
-        | uniq -c \
-        | sort -n \
+        | tidy_sort_count \
         | $SUMMARIZE
 }
 
-# List the most frequent IP addresses + protocol name combos 
-function frequent_ipproto {
+# Dionaea: List the most frequent IP addresses + protocol name combos 
+function dionaea_frequent_ipproto {
     echo
-    echo ======== Most frequent connectors by IP address + protocol name ========
+    echo "======== ($FUNCNAME) Dionaea: Most frequent connectors by IP address + protocol name ========"
     echo
     ls $dionaealogs_dirs \
         | grep -v $ignorehosts \
-        | get_proto_ipaddr \
-        | grep . \
-        | sort \
-        | uniq -c \
-        | sort -n \
+        | dionaea_get_proto_ipaddr \
+        | tidy_sort_count \
         | $SUMMARIZE
 }
 
-# List the most frequent protocol names
-function frequent_proto {
+# Dionaea: List the most frequent protocol names
+function dionaea_frequent_proto {
     echo
-    echo ======== Most frequent connectors by protocol name ========
+    echo "======== ($FUNCNAME) Dionaea: Most frequent connectors by protocol name ========"
     echo
     ls $dionaealogs_dirs \
         | grep -v $ignorehosts \
-        | get_proto_ipaddr \
+        | dionaea_get_proto_ipaddr \
         | first \
-        | grep . \
-        | sort \
-        | uniq -c \
-        | sort -n \
+        | tidy_sort_count \
         | $SUMMARIZE
+}
+
+# Kippo: List the most frequent IPs
+function kippo_frequent_ips {
+    echo
+    echo "======== ($FUNCNAME) Kippo: Most frequent connectors by IP address ========"
+    echo
+    cat $kippologs_dir/*.log* \
+        | grep 'login attempt' \
+        | grep -v $ignorehosts \
+        | kippo_get_ipaddr \
+        | tidy_sort_count \
+        | $SUMMARIZE
+}
+
+# Kippo: List the most frequent usernames/passwords
+function kippo_frequent_unpw {
+    sel=first
+    if [[ $1 = "passwords" ]]; then
+        sel=second
+    fi
+
+    cat $kippologs_dir/*.log* \
+        | grep 'login attempt' \
+        | grep -v $ignorehosts \
+        | kippo_get_unpw \
+        | $sel \
+        | tidy_sort_count \
+        | $SUMMARIZE
+}
+
+function kippo_frequent_usernames {
+    echo
+    echo "======== ($FUNCNAME) Kippo: Most frequent usernames ========"
+    echo
+    kippo_frequent_unpw usernames
+}
+
+function kippo_frequent_passwords {
+    echo
+    echo "======== ($FUNCNAME) Kippo: Most frequent passwords ========"
+    echo
+    kippo_frequent_unpw passwords
 }
 
 ############ do the work
 
-echo $OPERATIONS
-if [[ $OPERATIONS =~ frequent_ips ]]; then
-    frequent_ips
-fi
-if [[ $OPERATIONS =~ frequent_ipproto ]]; then
-    frequent_ipproto
-fi
-if [[ $OPERATIONS =~ frequent_proto ]]; then
-    frequent_proto
-fi
+for f in dionaea_frequent_ips dionaea_frequent_ipproto dionaea_frequent_proto kippo_frequent_ips kippo_frequent_usernames kippo_frequent_passwords; do
+    if [[ $OPERATIONS = "all" || $OPERATIONS =~ $f ]]; then
+        $f
+    fi
+done
