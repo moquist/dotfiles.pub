@@ -14,7 +14,6 @@
 
      :editor {"alt-w" [:editor.watch.watch-selection]
               "alt-shift-w" [:editor.watch.unwatch]
-              "=" [:smart-indent-selection]
               "alt-shift-0" [:paredit.grow.right]
               "alt-s" [:paredit.unwrap.parent]
               }}}
