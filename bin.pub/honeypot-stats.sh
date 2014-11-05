@@ -6,9 +6,15 @@
 
 CONF=.honeypot-stats.conf
 
+TAIL=/usr/bin/tail
+GETOPT=/usr/bin/getopt
+SED=/bin/sed
+AWK=/usr/bin/awk
+GREP=/bin/grep
+
 ############ defaults
 # Default to listing the biggest/most frequent, etc.
-SUMMARIZE='tail -n 5'
+SUMMARIZE="$TAIL -n 5"
 
 # Default to listing the most frequently-connected IPs
 OPERATIONS=dionaea_frequent_ips
@@ -58,7 +64,7 @@ ignorehosts=\"192.168.0.0\"
 "
 }
 
-TEMP=`getopt -o c,h,o:,v --long conf-sample,help,operations:,verbose -- "$@"`
+TEMP=`$GETOPT -o c,h,o:,v --long conf-sample,help,operations:,verbose -- "$@"`
 if [ $? != 0 ] ; then echo "bad getopt exit" >&2 ; exit 1 ; fi
 eval set -- "$TEMP"
 while true ; do
@@ -75,26 +81,26 @@ done
 function dionaea_get_proto_ipaddr {
     # Grab the protocol name and IP address from the name of the bistream file.
     # Yep, we're only doing IPv4 for now.
-    sed 's/^\([^-]*\)-[0-9]\+-::ffff:\([^-]\+\)-.*$/\1 \2/'
+    $SED 's/^\([^-]*\)-[0-9]\+-::ffff:\([^-]\+\)-.*$/\1 \2/'
 }
 
 function kippo_get_ipaddr {
-    awk -F, '{print $3}' | sed 's/].*$//'
+    $AWK -F, '{print $3}' | $SED 's/].*$//'
 }
 
 function kippo_get_unpw {
-    sed 's#^.*login attempt \[\([^/]\+\)/\(.\+\)\].*$#\1 \2#'
+    $SED 's#^.*login attempt \[\([^/]\+\)/\(.\+\)\].*$#\1 \2#'
 }
 
 function first {
-    awk '{print $1}'
+    $AWK '{print $1}'
 }
 function second {
-    awk '{print $2}'
+    $AWK '{print $2}'
 }
 
 function tidy_sort_count {
-    grep . | sort | uniq -c | sort -n
+    $GREP . | sort | uniq -c | sort -n
 }
 
 ############ stats functions
@@ -103,7 +109,7 @@ function dionaea_frequent_ips {
     echo
     echo "======== ($FUNCNAME) Dionaea: Most frequent connectors by IP address ========"
     ls $dionaealogs_dirs \
-        | grep -v $ignorehosts \
+        | $GREP -v $ignorehosts \
         | dionaea_get_proto_ipaddr \
         | second \
         | tidy_sort_count \
@@ -116,7 +122,7 @@ function dionaea_frequent_ipproto {
     echo "======== ($FUNCNAME) Dionaea: Most frequent connectors by IP address + protocol name ========"
     echo
     ls $dionaealogs_dirs \
-        | grep -v $ignorehosts \
+        | $GREP -v $ignorehosts \
         | dionaea_get_proto_ipaddr \
         | tidy_sort_count \
         | $SUMMARIZE
@@ -128,7 +134,7 @@ function dionaea_frequent_proto {
     echo "======== ($FUNCNAME) Dionaea: Most frequent connectors by protocol name ========"
     echo
     ls $dionaealogs_dirs \
-        | grep -v $ignorehosts \
+        | $GREP -v $ignorehosts \
         | dionaea_get_proto_ipaddr \
         | first \
         | tidy_sort_count \
@@ -143,8 +149,8 @@ function kippo_frequent_ips {
     fi
 
     cat $kippologs_dir/*.log* \
-        | grep "$indicator" \
-        | grep -v $ignorehosts \
+        | $GREP "$indicator" \
+        | $GREP -v $ignorehosts \
         | kippo_get_ipaddr \
         | tidy_sort_count \
         | $SUMMARIZE
@@ -172,8 +178,8 @@ function kippo_frequent_unpw {
     fi
 
     cat $kippologs_dir/*.log* \
-        | grep 'login attempt' \
-        | grep -v $ignorehosts \
+        | $GREP 'login attempt' \
+        | $GREP -v $ignorehosts \
         | kippo_get_unpw \
         | $sel \
         | tidy_sort_count \
