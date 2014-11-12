@@ -33,6 +33,10 @@ export HISTFILESIZE=4000
 export DEBFULLNAME="Matt Oquist"
 export DEBEMAIL="moquist@majen.net"
 
+# MPC stuff
+export pup=6600
+export pdown=6601
+
 # PROMPT
 # ------
 
