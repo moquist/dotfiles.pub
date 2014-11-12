@@ -1,0 +1,14 @@
+#!/bin/bash
+
+keyfile="$HOME/.google-safe.key"
+[[ ! -f $keyfile ]] && echo "missing $keyfile (needs to contain only your API key)" && exit 1
+
+url="$1"
+if [[ ! $url =~ ^http ]]; then
+    url="http://$url"
+fi
+
+base='https://sb-ssl.google.com/safebrowsing/api/lookup?client=demo-app&appver=1.5.2&pver=3.1'
+key=$(cat "$keyfile")
+url=$(urlencode $url)
+curl -i "$base&key=$key&url=$url"
