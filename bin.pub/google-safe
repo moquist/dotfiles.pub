@@ -8,7 +8,7 @@ if [[ ! $url =~ ^http ]]; then
     url="http://$url"
 fi
 
-base='https://sb-ssl.google.com/safebrowsing/api/lookup?client=demo-app&appver=1.5.2&pver=3.1'
+base='https://sb-ssl.google.com/safebrowsing/api/lookup?client=cli-tester&appver=1.5.2&pver=3.1'
 key=$(cat "$keyfile")
 url=$(urlencode $url)
 curl -i "$base&key=$key&url=$url"
