@@ -25,6 +25,9 @@
   (when (not (package-installed-p p))
     (package-install p)))
 
+(require 'evil)
+(evil-mode 1)
+
 ;;(setq inferior-lisp-load-command nil)
 (setq clojure-inf-lisp-command "clojure-repl")
 
