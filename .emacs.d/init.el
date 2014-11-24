@@ -53,6 +53,8 @@
 
 (remove-hook 'clojure-mode-hook 'esk-pretty-fn)
 (add-hook 'clojure-mode-hook 'paredit-mode)
+(add-hook 'clojure-mode-hook 'supplement-clojure-font-lock)
+
 
 (eval-after-load 'paredit '(define-key paredit-mode-map (kbd "M-)") 'paredit-forward-slurp-sexp))
 (eval-after-load 'paredit '(define-key paredit-mode-map (kbd "M-}") 'paredit-forward-barf-sexp))
