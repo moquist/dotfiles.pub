@@ -55,6 +55,25 @@
 (add-hook 'clojure-mode-hook 'paredit-mode)
 (add-hook 'clojure-mode-hook 'supplement-clojure-font-lock)
 
+(defun ensure-clj-repl ()
+  "Start a clojure repl using inferior-lisp mode"
+  (inferior-lisp "clojure-repl")
+  (rename-buffer "*clj-repl*")
+  (set-syntax-table clojure-mode-syntax-table)
+  (clojure-font-lock-setup)
+  (supplement-clojure-font-lock))
+
+(defun clj-repl ()
+  "Switch to existing clojure repl or start a new one"
+  (interactive)
+  (let ((repl-window (get-buffer-window "*clj-repl*")))
+    (if repl-window
+        (select-window repl-window)
+      (split-window nil nil 'left)))
+  (when (switch-to-buffer "*clj-repl*")
+    (rename-buffer "*inferior-lisp*"))
+  (ensure-clj-repl))
+
 
 (eval-after-load 'paredit '(define-key paredit-mode-map (kbd "M-)") 'paredit-forward-slurp-sexp))
 (eval-after-load 'paredit '(define-key paredit-mode-map (kbd "M-}") 'paredit-forward-barf-sexp))
