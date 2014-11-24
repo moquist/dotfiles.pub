@@ -28,6 +28,14 @@
 (require 'evil)
 (evil-mode 1)
 
+(setq
+ backup-by-copying t
+ backup-directory-alist '(("." . "~/.bak.emacs"))
+ delete-old-versions t
+ kept-new-versions 6
+ kept-old-versions 2
+ version-control 1)
+
 ;;(setq inferior-lisp-load-command nil)
 (setq clojure-inf-lisp-command "clojure-repl")
 
