@@ -74,6 +74,10 @@
     (rename-buffer "*inferior-lisp*"))
   (ensure-clj-repl))
 
+(add-hook 'inferior-lisp-mode-hook 'paredit-mode)
+(add-hook 'inferior-lisp-mode-hook
+          (lambda ()
+            (set-syntax-table clojure-mode-syntax-table)))
 
 (eval-after-load 'paredit '(define-key paredit-mode-map (kbd "M-)") 'paredit-forward-slurp-sexp))
 (eval-after-load 'paredit '(define-key paredit-mode-map (kbd "M-}") 'paredit-forward-barf-sexp))
