@@ -12,18 +12,18 @@
 (or (file-exists-p package-user-dir)
     (package-refresh-contents))
 
-(unless (package-installed-p 'evil)
-  (package-refresh-contents)
-  (package-install 'dash) 
-  (package-install 'evil) 
-  (package-install 'pkg-info) 
-  (package-install 'clojure-mode) 
-  (package-install 'ido-ubiquitous)
-  (package-install 'smex)
-  (package-install 'better-defaults)
-  (package-install 'paredit)
-  ;; (package-install 'cider)
-  )
+(defvar package-list '(evil ;; vimmy emacs
+                       dash ;; required for clojure-mode
+                       pkg-info
+                       smex
+                       ido-ubiquitous
+                       clojure-mode
+                       clojure-mode-extra-font-locking
+                       better-defaults
+                       paredit))
+(dolist (p package-list)
+  (when (not (package-installed-p p))
+    (package-install p)))
 
 ;;(setq inferior-lisp-load-command nil)
 (setq clojure-inf-lisp-command "clojure-repl")
