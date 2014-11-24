@@ -9,6 +9,8 @@
                          ("marmalade" . "http://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa-stable.milkbox.net/packages/")))
 (package-initialize)
+(or (file-exists-p package-user-dir)
+    (package-refresh-contents))
 
 (unless (package-installed-p 'evil)
   (package-refresh-contents)
