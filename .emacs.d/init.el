@@ -89,24 +89,13 @@
 ;; Make C-u scroll up a page as in vim.
 (setq evil-want-C-u-scroll t)
 
-(setq scroll-conservatively 1)
+(setq scroll-conservatively 10000)
 (setq scroll-margin 3)
 
-;; Define a Clojure style word. (should be limited to .clj files at
-;; some point.)
-(setq evil-word "-A-Za-z0-9:!#$%&*+<=>?@^_~")
+;; auto indent new lines
+(define-key global-map (kbd "RET") 'newline-and-indent)
 
-;; Load Evil
-(let* ((fname load-file-name)
-       (fdir (file-name-directory fname)))
-  (add-to-list 'load-path (concat fdir "/evil"))
-  (add-to-list 'load-path (concat fdir "/evil/lib")))
-(require 'evil)
-(evil-mode 1)
+(setq-default show-trailing-whitespace t)
 
-;; Newer version of cider appears to take care of this.
-;(setq auto-mode-alist  (cons ' ("\\.edn" . clojure-mode) auto-mode-alist))
-
-(global-set-key  (kbd "M-z") 'suspend-emacs) ; Meta+z
 (global-set-key  (kbd "M-x") 'smex)
 (global-set-key  (kbd "M-X") 'smex-major-mode-commands)
