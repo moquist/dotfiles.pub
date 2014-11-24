@@ -70,8 +70,6 @@
     (if repl-window
         (select-window repl-window)
       (split-window nil nil 'left)))
-  (when (switch-to-buffer "*inferior-lisp*")
-    (rename-buffer "*inferior-lisp*"))
   (ensure-clj-repl))
 
 (add-hook 'inferior-lisp-mode-hook 'paredit-mode)
