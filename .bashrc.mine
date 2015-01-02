@@ -30,9 +30,6 @@ alias box="source /usr/local/bin/box"
 export HISTSIZE=4000
 export HISTFILESIZE=4000
 
-export DEBFULLNAME="Matt Oquist"
-export DEBEMAIL="moquist@majen.net"
-
 # MPC stuff
 export pup=6600
 export pdown=6601
