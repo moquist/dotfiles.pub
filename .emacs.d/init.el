@@ -36,9 +36,6 @@
  kept-old-versions 2
  version-control 1)
 
-;;(setq inferior-lisp-load-command nil)
-(setq clojure-inf-lisp-command "clojure-repl")
-
 (require 'clojure-mode-extra-font-locking)
 (defface clojure-special-chars
     '((t (:foreground "red")))
