@@ -13,6 +13,7 @@ DIRNAME=/usr/bin/dirname
 FIND=/usr/bin/find
 GETOPT=/usr/bin/getopt
 GREP=/bin/grep
+JAVA=/usr/bin/java
 SORT=/usr/bin/sort
 TAIL=/usr/bin/tail
 
@@ -39,7 +40,8 @@ function usage {
         (setq clojure-inf-lisp-command "clojure-repl") 
 
         Also see this elisp that starts a clojure-repl in a new buffer for you:
-        https://gist.github.com/dzaharee/257476c8ecdf69a471f9"
+        https://gist.github.com/dzaharee/257476c8ecdf69a471f9
+"
 }
 
 function confsample {
@@ -49,6 +51,17 @@ CLASSPATH_FILE=.classpath
 
 # Name of the file marking the REPL working dir
 WORKING_DIR_MARKER= # empty for \$PWD
+
+# The following system paths may also be overridden here:
+#BASENAME=/usr/bin/basename
+#CAT=/bin/cat
+#DIRNAME=/usr/bin/dirname
+#FIND=/usr/bin/find
+#GETOPT=/usr/bin/getopt
+#GREP=/bin/grep
+#JAVA=/usr/bin/java
+#SORT=/usr/bin/sort
+#TAIL=/usr/bin/tail
 "
 }
 
@@ -116,4 +129,4 @@ if [[ -n $WORKING_DIR_MARKER ]]; then
 fi
 
 echo Starting clojure.main...
-java -cp "$(get_classpath)" clojure.main -r
+$JAVA -cp "$(get_classpath)" clojure.main -r
