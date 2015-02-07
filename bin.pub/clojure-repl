@@ -116,6 +116,9 @@ function find_clojure_jar {
 
 # Put the classpath on stdout for capture.
 function get_classpath {
+    if [[ -n $VERBOSE ]]; then
+	>&2 echo "Searching for \$CLASSPATH_FILE ($CLASSPATH_FILE)"
+    fi
     classpath="$(find_cat_file $CLASSPATH_FILE)"
     if [[ -z $classpath ]]; then
         classpath="$(find_clojure_jar)"
@@ -127,18 +130,26 @@ function get_classpath {
     echo "$classpath"
 }
 
-if [[ -n $WORKING_DIR_MARKER ]]; then
-    d=$(find_file "$WORKING_DIR_MARKER")
-    if [[ -n $d ]]; then
-        d=$($DIRNAME $d)
-        cd "$d"
+function change_working_dir {
+    if [[ -n $WORKING_DIR_MARKER ]]; then
 	if [[ -n $VERBOSE ]]; then
-	    >&2 echo PWD: $PWD
+	    >&2 echo "Searching for \$WORKING_DIR_MARKER ($WORKING_DIR_MARKER)"
+	fi
+	d=$(find_file "$WORKING_DIR_MARKER")
+	if [[ -n $d ]]; then
+	    d=$($DIRNAME $d)
+	    cd "$d"
+	    if [[ -n $VERBOSE ]]; then
+		>&2 echo PWD: $PWD
+	    fi
 	fi
     fi
-fi
+}
+
+CLASSPATH="$(get_classpath)"
+change_working_dir
 
 if [[ -n $VERBOSE ]]; then
     >&2 echo Starting clojure.main...
 fi
-$JAVA -cp "$(get_classpath)" clojure.main -r
+$JAVA -cp "$CLASSPATH" clojure.main -r
