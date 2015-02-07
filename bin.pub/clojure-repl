@@ -1,41 +1,119 @@
 #!/bin/bash
-# Put this in your $PATH and call it "clojure-repl", and (setq
-# clojure-inf-lisp-command "clojure-repl") if you're into the whole Emacs thing
-# and you want to use inferior-lisp.
+# Start a Clojure REPL with a configured classpath and working directory.
 
-# Walk from $PWD up to /, looking for a .classpath file.
-# If found, cat its contents for capture.
-function find_dot_classpath {
-    local target_dir="$PWD"
+# Configuration
+CONF=.clojure-repl.conf
+CLASSPATH_FILE=.classpath
+WORKING_DIR_MARKER=
 
-    local d="$target_dir"
+# System paths
+BASENAME=/usr/bin/basename
+CAT=/bin/cat
+DIRNAME=/usr/bin/dirname
+FIND=/usr/bin/find
+GETOPT=/usr/bin/getopt
+GREP=/bin/grep
+SORT=/usr/bin/sort
+TAIL=/usr/bin/tail
+
+# Override defaults in $CONF
+[[ -f $HOME/$CONF ]] && . $HOME/$CONF
+
+function usage {
+    echo "Start a Clojure REPL with a configured classpath and (if desired) a configured working directory.
+    
+    Usage: $($BASENAME $0) [-c | --classpath-file] [-h | --help] [-s | --sample-conf] [-w | --working-dir-marker]
+    -c|--classpath-file      Name of the file containing the complete classpath (Default: .classpath)
+    -h|--help                Print this help message.
+    -s|--sample-conf         Print a sample ~/$CONF file.
+    -w|--working-dir-marker  Name of the file marking the REPL working dir (Default: $PWD)
+
+    Defaults can be overwritten in ~/$CONF.
+
+    Here are a couple ways you might use $($BASENAME $0)
+        # On the CLI:
+        $ lein classpath > .classpath
+        $ $($BASENAME $0)
+
+        # Emacs inferior lisp: add this to your Emacs config:
+        (setq clojure-inf-lisp-command "clojure-repl") 
+
+        Also see this elisp that starts a clojure-repl in a new buffer for you:
+        https://gist.github.com/dzaharee/257476c8ecdf69a471f9"
+}
+
+function confsample {
+    echo "\
+# Name of the file containing the complete classpath
+CLASSPATH_FILE=.classpath
+
+# Name of the file marking the REPL working dir
+WORKING_DIR_MARKER= # empty for \$PWD
+"
+}
+
+TEMP=`$GETOPT -o c:,h,s,w: --long classpath-file:,help,sample-conf,working-dir-marker: -- "$@"`
+if [ $? != 0 ] ; then echo "bad getopt exit" >&2 ; exit 1 ; fi
+eval set -- "$TEMP"
+while true ; do
+    case "$1" in
+        -c|--classpath-file) CLASSPATH_FILE=$2; shift 2 ;;
+        -h|--help) usage; exit 0 ;;
+	-s|--sample-conf) confsample; exit 0 ;;
+        -w|--working-dir-marker) WORKING_DIR_MARKER=$2; shift 2 ;;
+	--) shift ; break ;;
+        *) echo "Internal error!" ; exit 1 ;;
+    esac
+done
+
+# Walk from $PWD up to /, looking for the file named in $1.
+# If found, echo its path for capture.
+function find_file {
+    local target_file="$1"
+    local d="$PWD"
     while [[ "/" != $(command cd -P $d && \pwd) ]]; do
-        if [[ -f "$d/.classpath" ]]; then
-            >&2 echo "Project .classpath found! ($d/.classpath)"
-            cat "$d/.classpath"
+        if [[ -f $d/$target_file ]]; then
+            >&2 echo "$target_file found! ($d/$target_file)"
+            echo "$d/$target_file"
             break
         fi
         d="$d/.."
     done
 }
 
+function find_cat_file {
+    f=$(find_file $1)
+    if [[ -n $f ]]; then
+        $CAT "$f"
+    fi
+}
+
 # Find the latest (sort -n) version of the clojure .jar in ~/.m2.
 function find_clojure_jar {
-    find ~/.m2 -name clojure*.jar | grep org/clojure/clojure/ | sort -n | tail -n1
+    $FIND ~/.m2 -name clojure*.jar | $GREP org/clojure/clojure/ | $SORT -n | $TAIL -n1
 }
 
 # Put the classpath on stdout for capture.
 function get_classpath {
-    classpath="$(find_dot_classpath)"
-    if [[ -z "$classpath" ]]; then
+    classpath="$(find_cat_file $CLASSPATH_FILE)"
+    if [[ -z $classpath ]]; then
         classpath="$(find_clojure_jar)"
         >&2 echo
-        >&2 echo "WARNING: No .classpath found, resorting to $classpath."
-        >&2 echo "         You may use 'lein classpath > .classpath' or 'cmma classpath > .classpath' to make a .classpath file for your project."
+        >&2 echo "WARNING: No $CLASSPATH_FILE found, resorting to $classpath."
+        >&2 echo "         You may use 'lein classpath > $CLASSPATH_FILE' or 'cmma classpath > $CLASSPATH_FILE' to make a $CLASSPATH_FILE file for your project."
         >&2 echo
     fi
     echo "$classpath"
 }
+
+if [[ -n $WORKING_DIR_MARKER ]]; then
+    d=$(find_file "$WORKING_DIR_MARKER")
+    if [[ -n $d ]]; then
+        d=$($DIRNAME $d)
+        cd "$d"
+        echo PWD: $PWD
+    fi
+fi
 
 echo Starting clojure.main...
 java -cp "$(get_classpath)" clojure.main -r
