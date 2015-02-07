@@ -4,6 +4,7 @@
 # Configuration
 CONF=.clojure-repl.conf
 CLASSPATH_FILE=.classpath
+VERBOSE=
 WORKING_DIR_MARKER=
 
 # System paths
@@ -23,10 +24,11 @@ TAIL=/usr/bin/tail
 function usage {
     echo "Start a Clojure REPL with a configured classpath and (if desired) a configured working directory.
     
-    Usage: $($BASENAME $0) [-c | --classpath-file] [-h | --help] [-s | --sample-conf] [-w | --working-dir-marker]
+    Usage: $($BASENAME $0) [-c | --classpath-file] [-h | --help] [-s | --sample-conf] [-v | --verbose] [-w | --working-dir-marker]
     -c|--classpath-file      Name of the file containing the complete classpath (Default: .classpath)
     -h|--help                Print this help message.
     -s|--sample-conf         Print a sample ~/$CONF file.
+    -v|--verbose             Print some stuff on STDERR.
     -w|--working-dir-marker  Name of the file marking the REPL working dir (Default: $PWD)
 
     Defaults can be overwritten in ~/$CONF.
@@ -49,6 +51,9 @@ function confsample {
 # Name of the file containing the complete classpath
 CLASSPATH_FILE=.classpath
 
+# Set to 1 to enable verbosity.
+VERBOSE=
+
 # Name of the file marking the REPL working dir
 WORKING_DIR_MARKER= # empty for \$PWD
 
@@ -65,7 +70,7 @@ WORKING_DIR_MARKER= # empty for \$PWD
 "
 }
 
-TEMP=`$GETOPT -o c:,h,s,w: --long classpath-file:,help,sample-conf,working-dir-marker: -- "$@"`
+TEMP=`$GETOPT -o c:,h,s,v,w: --long classpath-file:,help,sample-conf,verbose,working-dir-marker: -- "$@"`
 if [ $? != 0 ] ; then echo "bad getopt exit" >&2 ; exit 1 ; fi
 eval set -- "$TEMP"
 while true ; do
@@ -73,6 +78,7 @@ while true ; do
         -c|--classpath-file) CLASSPATH_FILE=$2; shift 2 ;;
         -h|--help) usage; exit 0 ;;
 	-s|--sample-conf) confsample; exit 0 ;;
+	-v|--verbose) VERBOSE=1; shift ;;
         -w|--working-dir-marker) WORKING_DIR_MARKER=$2; shift 2 ;;
 	--) shift ; break ;;
         *) echo "Internal error!" ; exit 1 ;;
@@ -86,7 +92,9 @@ function find_file {
     local d="$PWD"
     while [[ "/" != $(command cd -P $d && \pwd) ]]; do
         if [[ -f $d/$target_file ]]; then
-            >&2 echo "$target_file found! ($d/$target_file)"
+	    if [[ -n $VERBOSE ]]; then
+		>&2 echo "$target_file found! ($d/$target_file)"
+	    fi
             echo "$d/$target_file"
             break
         fi
@@ -124,9 +132,13 @@ if [[ -n $WORKING_DIR_MARKER ]]; then
     if [[ -n $d ]]; then
         d=$($DIRNAME $d)
         cd "$d"
-        echo PWD: $PWD
+	if [[ -n $VERBOSE ]]; then
+	    >&2 echo PWD: $PWD
+	fi
     fi
 fi
 
-echo Starting clojure.main...
+if [[ -n $VERBOSE ]]; then
+    >&2 echo Starting clojure.main...
+fi
 $JAVA -cp "$(get_classpath)" clojure.main -r
