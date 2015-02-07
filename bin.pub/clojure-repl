@@ -146,6 +146,7 @@ function change_working_dir {
     fi
 }
 
+###############################
 CLASSPATH="$(get_classpath)"
 change_working_dir
 
