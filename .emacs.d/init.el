@@ -28,6 +28,7 @@
 (require 'evil)
 (evil-mode 1)
 
+;; http://www.emacswiki.org/emacs/BackupDirectory 
 (setq
  backup-by-copying t
  backup-directory-alist '(("." . "~/.bak.emacs"))

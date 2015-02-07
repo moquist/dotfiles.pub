@@ -15,6 +15,7 @@
     st = status
     ci = commit
     log1 = log --pretty=oneline --decorate
+    rbu = rebase @{upstream}
 
 [merge]
 	tool = vimdiff
