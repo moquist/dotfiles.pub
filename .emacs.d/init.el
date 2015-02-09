@@ -73,5 +73,6 @@
 
 (global-set-key  (kbd "M-x") 'smex)
 (global-set-key  (kbd "M-X") 'smex-major-mode-commands)
+(column-number-mode)
 
 (load-library "clj-repl")
