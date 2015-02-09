@@ -10,6 +10,7 @@ done
 
 mkdir -p ~/.emacs.d
 ln -vsf ~/$repo/.emacs.d/init.el ~/.emacs.d/
+ln -vsf ~/$repo/.emacs.d/clj-repl.el ~/.emacs.d/
 
 mkdir -p ~/.i3
 ln -vsf ~/$repo/.i3/config ~/.i3/
