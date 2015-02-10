@@ -28,12 +28,21 @@ function usage {
     
     Usage: $me [-c | --classpath-file] [-h | --help] [-s | --sample-conf] [-v | --verbose] [-w | --working-dir-marker]
     -c|--classpath-file      Name of the file containing the complete classpath (Default: .classpath)
+			     $me will look for your configured classpath file
+			     starting in \$PWD and walking up to /. If no
+			     classpath file is found, $me will look for
+			     a Clojure .jar file under ~/.m2/ and use the latest
+			     version found.
     -h|--help                Print this help message.
     -s|--sample-conf         Print a sample ~/$CONF file.
     -v|--verbose             Print some stuff on STDERR.
-    -w|--working-dir-marker  Name of the file marking the REPL working dir (Default: $PWD)
+    -w|--working-dir-marker  Name of the file marking the REPL working dir (Default: unset)
+                             $me will look for this marker file starting in
+			     \$PWD and walking up to /. If the marker file is
+			     unset or not found, \$PWD is not changed.
 
     Defaults can be overwritten in ~/$CONF.
+
 
     Here are a couple ways you might use $me
         $ lein classpath > .classpath
