@@ -21,10 +21,12 @@ TAIL=/usr/bin/tail
 # Override defaults in $CONF
 [[ -f $HOME/$CONF ]] && . "$HOME/$CONF"
 
+me=$($BASENAME $0)
+
 function usage {
     echo "Start a Clojure REPL with a configured classpath and (if desired) a configured working directory.
     
-    Usage: $($BASENAME $0) [-c | --classpath-file] [-h | --help] [-s | --sample-conf] [-v | --verbose] [-w | --working-dir-marker]
+    Usage: $me [-c | --classpath-file] [-h | --help] [-s | --sample-conf] [-v | --verbose] [-w | --working-dir-marker]
     -c|--classpath-file      Name of the file containing the complete classpath (Default: .classpath)
     -h|--help                Print this help message.
     -s|--sample-conf         Print a sample ~/$CONF file.
@@ -33,10 +35,9 @@ function usage {
 
     Defaults can be overwritten in ~/$CONF.
 
-    Here are a couple ways you might use $($BASENAME $0)
-        # On the CLI:
+    Here are a couple ways you might use $me
         $ lein classpath > .classpath
-        $ $($BASENAME $0)
+        $ $me
 
         # Emacs inferior lisp: add this to your Emacs config:
         (setq clojure-inf-lisp-command "clojure-repl") 
