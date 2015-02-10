@@ -158,6 +158,11 @@ function change_working_dir {
 
 ###############################
 CLASSPATH="$(get_classpath)"
+if [[ -z $CLASSPATH ]]; then
+    >&2 echo "No $CLASSPATH_FILE or Clojure .jar under ~/.m2/ found. Quitting in disgrace. :("
+    exit 2
+fi
+
 change_working_dir
 
 if [[ -n $VERBOSE ]]; then
