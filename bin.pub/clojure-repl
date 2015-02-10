@@ -19,7 +19,7 @@ SORT=/usr/bin/sort
 TAIL=/usr/bin/tail
 
 # Override defaults in $CONF
-[[ -f $HOME/$CONF ]] && . $HOME/$CONF
+[[ -f $HOME/$CONF ]] && . "$HOME/$CONF"
 
 function usage {
     echo "Start a Clojure REPL with a configured classpath and (if desired) a configured working directory.
