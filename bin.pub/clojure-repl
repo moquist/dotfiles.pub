@@ -39,10 +39,11 @@ function usage {
         $ lein classpath > .classpath
         $ $me
 
-        # Emacs inferior lisp: add this to your Emacs config:
+	# Or to use with Emacs inferior lisp, add this to your Emacs config:
         (setq clojure-inf-lisp-command "clojure-repl") 
 
-        Also see this elisp that starts a clojure-repl in a new buffer for you:
+	Alternatively, see this pleasing elisp that starts a clojure-repl in
+	a new buffer for you:
         https://gist.github.com/dzaharee/257476c8ecdf69a471f9
 "
 }
