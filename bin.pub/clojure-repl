@@ -82,7 +82,6 @@ while true ; do
 	-v|--verbose) VERBOSE=1; shift ;;
         -w|--working-dir-marker) WORKING_DIR_MARKER=$2; shift 2 ;;
 	--) shift ; break ;;
-        *) echo "Internal error!" ; exit 1 ;;
     esac
 done
 
