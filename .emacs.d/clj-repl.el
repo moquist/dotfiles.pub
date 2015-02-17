@@ -16,13 +16,45 @@
     (font-lock-add-keywords nil '(("[`~@#'%]" . 'clojure-special-chars)
                                   ("[][(){}]" . 'clojure-delimiter-chars))))
 
+;; Hijacked from
+;; https://github.com/clojure-emacs/clojure-mode/blob/master/clojure-mode.el
+;; because the original has a deal-breaking check for 'clojure-mode or
+;; 'cider-repl-mode.
+(defun clojure-space-for-delimiter-p (endp delim)
+  "Prevent paredit from inserting useless spaces.
+See `paredit-space-for-delimiter-predicates' for the meaning of
+ENDP and DELIM."
+  (save-excursion
+    (backward-char)
+    (if (and (or (char-equal delim ?\()
+                 (char-equal delim ?\")
+                 (char-equal delim ?{))
+             (not endp))
+        (if (char-equal (char-after) ?#)
+            (and (not (bobp))
+                 (or (char-equal ?w (char-syntax (char-before)))
+                     (char-equal ?_ (char-syntax (char-before)))))
+          t)
+      t)))
+
+(defun clj-repl-paredit-setup ()
+  ;; Stolen from https://github.com/clojure-emacs/clojure-mode/blob/master/clojure-mode.el
+  (when (>= paredit-version 21)
+    (define-key inferior-lisp-mode-map "{" #'paredit-open-curly)
+    (define-key inferior-list-mode-map "}" #'paredit-close-curly)
+    (add-to-list 'paredit-space-for-delimiter-predicates
+                 #'clojure-space-for-delimiter-p)
+    (add-to-list 'paredit-space-for-delimiter-predicates
+                 #'clojure-no-space-after-tag)))
+
 (defun ensure-clj-repl ()
   "Start a clojure repl using inferior-lisp mode"
   (inferior-lisp "clojure-repl")
   ;; (rename-buffer "*clj-repl*") ; Dave experimented with renaming the buffer. I'm experimenting with not doing that.
   (set-syntax-table clojure-mode-syntax-table)
   (clojure-font-lock-setup)
-  (supplement-clojure-font-lock))
+  (supplement-clojure-font-lock)
+  (clj-repl-paredit-setup))
 
 (defun clj-repl ()
   "Switch to existing clojure repl or start a new one"
