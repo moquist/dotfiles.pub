@@ -47,20 +47,27 @@ ENDP and DELIM."
     (add-to-list 'paredit-space-for-delimiter-predicates
                  #'clojure-no-space-after-tag)))
 
-(defun ensure-clj-repl ()
+(defun start-clj-repl (repl-prog)
   "Start a clojure repl using inferior-lisp mode"
-  (inferior-lisp "clojure-repl")
+  (inferior-lisp repl-prog)
   (set-syntax-table clojure-mode-syntax-table)
   (clojure-font-lock-setup)
   (supplement-clojure-font-lock)
   (clj-repl-paredit-setup))
 
-(defun clj-repl ()
+(defun ensure-repl (repl-prog)
   "Switch to existing clojure repl or start a new one"
-  (interactive)
   (let ((repl-window (get-buffer-window "*inferior-lisp*")))
     (if repl-window
         (select-window repl-window)
       (split-window nil nil 'left)))
-  (ensure-clj-repl))
+  (start-clj-repl repl-prog))
+
+(defun clj-repl ()
+  (interactive)
+  (ensure-repl "clojure-repl"))
+
+(defun cljs-repl ()
+  (interactive)
+  (ensure-repl "lein figwheel"))
 
