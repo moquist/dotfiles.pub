@@ -38,9 +38,10 @@
  version-control 1)
 
 (remove-hook 'clojure-mode-hook 'esk-pretty-fn)
-(add-hook 'clojure-mode-hook 'paredit-mode)
-(add-hook 'clojure-mode-hook 'supplement-clojure-font-lock)
 
+;; -----------------------------
+;; Paredit
+(add-hook 'inferior-lisp-mode-hook 'paredit-mode)
 (eval-after-load 'paredit '(define-key paredit-mode-map (kbd "M-)") 'paredit-forward-slurp-sexp))
 (eval-after-load 'paredit '(define-key paredit-mode-map (kbd "M-}") 'paredit-forward-barf-sexp))
 (eval-after-load 'paredit '(define-key paredit-mode-map (kbd "M-(") 'paredit-backward-slurp-sexp))

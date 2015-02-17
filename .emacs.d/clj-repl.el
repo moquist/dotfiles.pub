@@ -64,9 +64,3 @@ ENDP and DELIM."
       (split-window nil nil 'left)))
   (ensure-clj-repl))
 
-(add-hook 'inferior-lisp-mode-hook 'paredit-mode)
-(add-hook 'inferior-lisp-mode-hook
-          (lambda ()
-            (set-syntax-table clojure-mode-syntax-table)))
-
-
