@@ -50,7 +50,6 @@ ENDP and DELIM."
 (defun ensure-clj-repl ()
   "Start a clojure repl using inferior-lisp mode"
   (inferior-lisp "clojure-repl")
-  ;; (rename-buffer "*clj-repl*") ; Dave experimented with renaming the buffer. I'm experimenting with not doing that.
   (set-syntax-table clojure-mode-syntax-table)
   (clojure-font-lock-setup)
   (supplement-clojure-font-lock)
