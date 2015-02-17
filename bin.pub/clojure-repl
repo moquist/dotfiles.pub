@@ -49,7 +49,7 @@ function usage {
         $ $me
 
 	# Or to use with Emacs inferior lisp, add this to your Emacs config:
-        (setq clojure-inf-lisp-command "clojure-repl") 
+        (setq clojure-inf-lisp-command \"$me\")
 
 	Alternatively, see this pleasing elisp that starts a clojure-repl in
 	a new buffer for you:
