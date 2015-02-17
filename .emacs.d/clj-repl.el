@@ -1,4 +1,21 @@
 ;; https://gist.github.com/dzaharee/257476c8ecdf69a471f9
+
+;; https://marmalade-repo.org/packages/clojure-mode-extra-font-locking
+(require 'clojure-mode-extra-font-locking)
+
+(defface clojure-special-chars
+    '((t (:foreground "red")))
+      "Used for clojure special characters `~@#'%")
+
+(defface clojure-delimiter-chars
+    '((t (:foreground "yellow")))
+      "Used for clojure delimiters [](){}")
+
+(defun supplement-clojure-font-lock ()
+    "Add our extra clojure syntax highlighting"
+    (font-lock-add-keywords nil '(("[`~@#'%]" . 'clojure-special-chars)
+                                  ("[][(){}]" . 'clojure-delimiter-chars))))
+
 (defun ensure-clj-repl ()
   "Start a clojure repl using inferior-lisp mode"
   (inferior-lisp "clojure-repl")
