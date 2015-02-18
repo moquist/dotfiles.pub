@@ -10,10 +10,18 @@ done
 
 mkdir -p ~/.emacs.d
 ln -vsf ~/$repo/.emacs.d/init.el ~/.emacs.d/
-ln -vsf ~/$repo/.emacs.d/clj-repl.el ~/.emacs.d/
 
 mkdir -p ~/.i3
 ln -vsf ~/$repo/.i3/config ~/.i3/
 
 mkdir -p ~/.config/LightTable/settings/
 ln -vsf ~/$repo/.config/LightTable/settings/* ~/.config/LightTable/settings/
+
+cljrepldir=~/.clj-repl
+if [[ ! -d $cljrepldir ]]; then
+    git clone https://github.com/dzaharee/clj-repl "$cljrepldir"
+fi
+cd "$cljrepldir"
+git pull
+ln -vsf "$cljrepldir"/clj-repl.el ~/.emacs.d/
+ln -vsf "$cljrepldir"/clojure-repl ~/bin/

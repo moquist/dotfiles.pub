@@ -12,3 +12,5 @@ viminf*
 .weechat/weechat.log
 .emacs.d/elpa/archives
 .bash_history
+.emacs.d/clj-repl.el
+bin.pub/clojure-repl
