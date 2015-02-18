@@ -38,6 +38,7 @@
  version-control 1)
 
 (remove-hook 'clojure-mode-hook 'esk-pretty-fn)
+(add-hook 'clojure-mode-hook 'paredit-mode)
 
 ;; -----------------------------
 ;; Paredit
