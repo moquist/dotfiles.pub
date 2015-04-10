@@ -24,4 +24,4 @@ fi
 cd "$cljrepldir"
 git pull
 ln -vsf "$cljrepldir"/clj-repl.el ~/.emacs.d/
-ln -vsf "$cljrepldir"/clojure-repl ~/bin/
+ln -vsf "$cljrepldir"/clojure-repl ~/bin.pub/
