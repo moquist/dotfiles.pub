@@ -1,0 +1,22 @@
+#!/bin/bash
+
+conffile=/etc/default/keyboard
+
+conf="$1"
+if [[ -z $conf ]]; then
+    echo "Missing conf, must be 'laptop' or 'kinesis'"
+    exit 1
+fi
+
+cat > "$conffile" <<EOF
+# After you make changes:
+# sudo dpkg-reconfigure keyboard-configuration
+EOF
+
+case $conf in
+    laptop) echo 'XKBOPTIONS="ctrl:nocaps,altwin:swap_alt_win"' >> $conffile;;
+    kinesis) echo 'XKBOPTIONS="ctrl:nocaps"' >> $conffile;;
+    *) echo "argument must be either 'laptop' or 'kinesis'"; exit 1;;
+esac
+
+dpkg-reconfigure keyboard-configuration
