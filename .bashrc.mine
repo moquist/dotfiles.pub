@@ -62,6 +62,9 @@ user_prompt_color1=32; user_prompt_color2=34
 other_prompt_color1=32; other_prompt_color2=34
 
 H=`hostname -f`
+if [[ $H = "localhost" ]]; then
+    H=${HOSTNAME}
+fi
 if [ "$EUID" = 0 ]; then
   PS1='\[\033[01;${root_prompt_color1}m\]'
   PS1="$PS1"'\H \[\033[01;${root_prompt_color2}m\]\w \$ \[\033[00m\]'
