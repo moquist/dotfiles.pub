@@ -69,3 +69,4 @@
 (column-number-mode)
 
 (load-library "clj-repl")
+(load "emacs.local" t)
