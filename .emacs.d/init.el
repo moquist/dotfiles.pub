@@ -1,5 +1,7 @@
 ;; Note on interactive setq:
 ;; use M-:, which runs the command eval-expression
+;; then: (setq yourvar yourval)
+;; and: C-h v yourvar to see the value
 
 ;; Self-installing/configuring. Nothing else needed to get emacs working for
 ;; a vimmy clojurer.
