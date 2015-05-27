@@ -70,3 +70,6 @@
 
 (load-library "clj-repl")
 (load "emacs.local" t)
+
+(add-to-list 'custom-theme-load-path "~/.solarized")
+(load-theme 'solarized t)
