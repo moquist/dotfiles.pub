@@ -27,6 +27,7 @@
   (when (not (package-installed-p p))
     (package-install p)))
 
+(setq evil-word "-A-Za-z0-9:!#$%&*+<=>?@^_~")
 (require 'evil)
 (evil-mode 1)
 
