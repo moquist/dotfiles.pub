@@ -61,7 +61,11 @@ root_prompt_color1=31; root_prompt_color2=34
 user_prompt_color1=32; user_prompt_color2=34
 other_prompt_color1=32; other_prompt_color2=34
 
-H=`hostname -f`
+if hostname -f 2> /dev/null; then
+    H=`hostname -f`
+else
+    H=`hostname`
+fi
 if [[ $H = "localhost" ]]; then
     H=${HOSTNAME}
 fi
