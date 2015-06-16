@@ -23,7 +23,8 @@ if [[ ! -d $cljrepldir ]]; then
     git clone https://github.com/moquist/clj-repl "$cljrepldir"
 fi
 git -C "$cljrepldir" pull # hmm. pull?
-ln -vsf "$cljrepldir"/clj-repl.el ~/.emacs.d/
+mkdir -p ~/.emacs.d/moquist
+ln -vsf "$cljrepldir"/clj-repl.el ~/.emacs.d/moquist/
 ln -vsf "$cljrepldir"/clojure-repl ~/bin.pub/
 
 ## emacs solarized theme

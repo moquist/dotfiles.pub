@@ -51,7 +51,7 @@
 (eval-after-load 'paredit '(define-key paredit-mode-map (kbd "M-(") 'paredit-backward-slurp-sexp))
 (eval-after-load 'paredit '(define-key paredit-mode-map (kbd "M-{") 'paredit-backward-barf-sexp))
 
-(add-to-list 'load-path "~/.emacs.d/")
+(add-to-list 'load-path "~/.emacs.d/moquist/")
 
 ;; Make C-u scroll up a page as in vim.
 (setq evil-want-C-u-scroll t)
