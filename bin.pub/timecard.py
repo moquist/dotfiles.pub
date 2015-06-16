@@ -6,6 +6,9 @@
 # start: stop: headers.
 #
 # Then I cat that file into this script.
+#
+# Lines beginning with a space are ignored as comments.
+# Lines matching ^# *time logged$ cause remaining input to be ignored.
 
 # input like this:
 # stop: Fri Aug 29 20:34:55 EDT 2014
@@ -37,6 +40,8 @@ first_start_str = ""
 stoptime = 0
 
 for line in fileinput.input():
+    if (re.match("^# *time logged$", line)):
+        break
     if (re.match("^ +", line) or re.match ("^$", line)):
         continue
     (state, datestr) = re.split(": ", line.rstrip(), maxsplit=1)
