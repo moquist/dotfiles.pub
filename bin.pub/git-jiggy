@@ -1,0 +1,3 @@
+echo -n "Na, na, na, na, na, na, na, "
+sleep 1
+echo na, na, na, na, na
