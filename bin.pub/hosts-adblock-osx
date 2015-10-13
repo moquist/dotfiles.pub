@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+HOSTS_PATH=/private/etc/hosts # OSX
+SCRUBBED_HOSTS=~/.hosts-scrubbed.txt
+
+# Grab upstream file, limit it to 0.0.0.0, 127.0.0., ::1, and comments.
+curl -s http://winhelp2002.mvps.org/hosts.txt \
+    | egrep '^(?:0\.0\.0\.0|127\.0\.0\.|::1 | *#)' > $SCRUBBED_HOSTS
+
+# Prepend the default OSX entries. The duplication doesn't hurt, and this
+# ensures that we always have a working hosts file.
+cat <<EOF > $HOSTS_PATH
+127.0.0.1       localhost
+255.255.255.255 broadcasthost
+::1             localhost
+EOF
+
+cat $SCRUBBED_HOSTS >> $HOSTS_PATH
+
+# http://pointhope.de/tips&tricks/no_place_like_localhost.html
+dscacheutil -flushcache
