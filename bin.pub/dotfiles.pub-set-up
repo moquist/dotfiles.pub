@@ -17,6 +17,9 @@ ln -vsf ~/$repo/.i3/config ~/.i3/
 mkdir -p ~/.config/LightTable/settings/
 ln -vsf ~/$repo/.config/LightTable/settings/* ~/.config/LightTable/settings/
 
+mkdir -p ~/.ncmpc
+ln -vsf ~/$repo/.ncmpc/keys ~/.ncmpc/
+
 ## clj-repl
 cljrepldir=~/.clj-repl
 if [[ ! -d $cljrepldir ]]; then
