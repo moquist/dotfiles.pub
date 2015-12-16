@@ -91,7 +91,7 @@ export EDITOR=vim
 
 # add stuff to my path
 export PATH=~/bin:~/bin.pub:~/local/bin/:/sbin/:/usr/sbin/:$PATH
-export PATH=$PATH:/usr/local/bin
+export PATH=$PATH:/usr/local/bin:/usr/local/sbin
 
 type -P xterm &>/dev/null && alias xterm="xterm +sb -bdc -bc -bcn 500 -bcf 500 -reverse $XTERM_FONT"
 type -P emacs &>/dev/null && alias emacs="emacs -nw"
