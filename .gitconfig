@@ -26,8 +26,6 @@
     # log Full (format)
     logf = log -p --stat
 
-    ## From abrooks
-
     # fetch and show log of upstream commits
     inbound = !bash -c "\"git fetch; git log -p --stat HEAD..@{upstream}\""
 
@@ -49,10 +47,8 @@
     # (Log, One Line) "Y" format - compares HEAD vs upstream back to the merge point
     y = !git loly
 
-    ## From Nathan Ehresman
     lolol = log --graph --pretty=lolol --all
 
-    ## From Scott Chacon
     # Log, One Line
     lol = log --oneline --graph --decorate
     olo = log "--pretty=format:%s" --decorate
