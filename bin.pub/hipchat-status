@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+# Use HipChat API v2 to set user status.
+
+set -e
+if [ "$DEBUG" ]; then set -x; fi
+
+NAME=$(basename "${0}")
+
+usage() {
+    [ "${1}" ] && echo -e "\n${1}\n\n"
+    echo "$NAME <status message>
+
+Environment -- all required unless otherwise stated
+    HIPCHAT_EMAIL
+    HIPCHAT_FULL_NAME
+    HIPCHAT_HANDLE
+    HIPCHAT_SERVER         - defaults to api.hipchat.com
+    HIPCHAT_STATUS_MESSAGE - may be passed on command line
+                             default: \"\"
+    HIPCHAT_STATUS_SHOW    - enum: away, chat, dnd, xa
+                             default: \"away\"
+    HIPCHAT_TOKEN          - make your own at https://hipchat.com/account/api
+"
+    exit 1
+}
+
+
+while [ "$*" ]; do
+    param=$1;
+    case $param in
+        --help) usage ;;
+        *)      HIPCHAT_STATUS_MESSAGE="$*"; shift ;;
+    esac
+    shift || true
+done
+
+REQUIRED_VARS="HIPCHAT_FULL_NAME
+               HIPCHAT_HANDLE
+               HIPCHAT_EMAIL
+               HIPCHAT_TOKEN"
+
+ERROR_MSG=
+for v in $REQUIRED_VARS; do
+    if [ ! "${!v}" ]; then
+        ERROR_MSG="${ERROR_MSG}\nError: Missing $v"
+    fi
+done
+if [ "${ERROR_MSG}" ]; then
+    usage "$ERROR_MSG"
+fi
+
+HIPCHAT_STATUS_SHOW=${HIPCHAT_STATUS_SHOW:-away}
+HIPCHAT_SERVER=${HIPCHAT_SERVER:-api.hipchat.com}
+HIPCHAT_STATUS_MESSAGE=${HIPCHAT_STATUS_MESSAGE:-}
+
+# https://www.hipchat.com/docs/apiv2/method/update_user
+curl -XPUT \
+    -H "Content-Type: application/json" \
+    -d "{\"name\": \"$HIPCHAT_FULL_NAME\", \"mention_name\": \"$HIPCHAT_HANDLE\", \"email\": \"$HIPCHAT_EMAIL\", \"presence\": {\"status\": \"$HIPCHAT_STATUS_MESSAGE\", \"show\": \"$HIPCHAT_STATUS_SHOW\"}}" \
+    https://$HIPCHAT_SERVER/v2/user/$HIPCHAT_EMAIL?auth_token=$HIPCHAT_TOKEN

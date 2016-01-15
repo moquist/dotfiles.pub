@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+# Use HipChat API v2 to send a notification to a room.
+
+set -e
+if [ "$DEBUG" ]; then set -x; fi
+
+NAME=$(basename "${0}")
+
+usage() {
+    [ "${1}" ] && echo -e "\n${1}\n\n"
+    echo "$NAME <message>
+
+Environment -- all required unless default is specified
+    HIPCHAT_SERVER        - defaults to api.hipchat.com
+    HIPCHAT_MESSAGE       - may be passed on command line
+                            default: \"Hello!\"
+    HIPCHAT_MESSAGE_COLOR - yellow, green, red, purple, gray, random
+                            default: \"yellow\"
+    HIPCHAT_NOTIFY        - true, false
+                            default: \"true\"
+    HIPCHAT_ROOM          - name of room where notification will be sent
+    HIPCHAT_TOKEN         - make your own at https://hipchat.com/account/api
+"
+    exit 1
+}
+
+while [ "$*" ]; do
+    param=$1;
+    case $param in
+        --help) usage ;;
+        *) HIPCHAT_MESSAGE="$*"; shift ;;
+    esac
+    shift || true
+done
+
+echo hi1
+
+REQUIRED_VARS="HIPCHAT_ROOM
+               HIPCHAT_TOKEN"
+
+ERROR_MSG=
+for v in $REQUIRED_VARS; do
+    if [ ! "${!v}" ]; then
+        ERROR_MSG="${ERROR_MSG}\nError: Missing $v"
+    fi
+done
+if [ "${ERROR_MSG}" ]; then
+    usage "$ERROR_MSG"
+fi
+
+echo hi2
+HIPCHAT_SERVER=${HIPCHAT_SERVER:-api.hipchat.com}
+HIPCHAT_MESSAGE=${HIPCHAT_MESSAGE:-"Hello!"}
+HIPCHAT_MESSAGE_COLOR=${HIPCHAT_MESSAGE_COLOR:-yellow}
+HIPCHAT_NOTIFY=${HIPCHAT_NOTIFY:-true}
+
+# https://www.hipchat.com/docs/apiv2/method/send_room_notification
+curl -XPOST \
+    -H "Content-Type: application/json" \
+    -d "{\"message\": \"$HIPCHAT_MESSAGE\", \"notify\": \"$HIPCHAT_NOTIFY\", \"color\": \"$HIPCHAT_MESSAGE_COLOR\"}" \
+    "https://$HIPCHAT_SERVER/v2/room/$HIPCHAT_ROOM/notification?auth_token=$HIPCHAT_TOKEN"
