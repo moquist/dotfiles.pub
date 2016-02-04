@@ -33,8 +33,6 @@ while [ "$*" ]; do
     shift || true
 done
 
-echo hi1
-
 REQUIRED_VARS="HIPCHAT_ROOM
                HIPCHAT_TOKEN"
 
@@ -48,7 +46,6 @@ if [ "${ERROR_MSG}" ]; then
     usage "$ERROR_MSG"
 fi
 
-echo hi2
 HIPCHAT_SERVER=${HIPCHAT_SERVER:-api.hipchat.com}
 HIPCHAT_MESSAGE=${HIPCHAT_MESSAGE:-"Hello!"}
 HIPCHAT_MESSAGE_COLOR=${HIPCHAT_MESSAGE_COLOR:-yellow}
