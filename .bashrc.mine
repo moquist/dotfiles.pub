@@ -140,6 +140,6 @@ if type -P keychain &>/dev/null; then
     allkeys="$HOME/.ssh/*_rsa"
     keys=
     for key in $allkeys; do [ -f "$key" ] && keys="${keys} $key "; done
-    eval $(keychain --nogui --eval $keys)
+    eval $(keychain --timeout ${KEYCHAIN_TIMEOUT:-15} --nogui --eval $keys)
 fi
 
