@@ -21,7 +21,7 @@
     root = rev-parse --show-cdup
 
     # Code Review: all commits since last push
-    cr = git log -p --stat --reverse ^$(git merge-base HEAD @{upstream}) HEAD
+    cr = !bash -c \""git log -p --stat --reverse ^$(git merge-base HEAD @{upstream}) HEAD\""
 
     # diff Cached
     diffc = diff --cached
