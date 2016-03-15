@@ -61,7 +61,7 @@ root_prompt_color1=31; root_prompt_color2=34
 user_prompt_color1=32; user_prompt_color2=34
 other_prompt_color1=32; other_prompt_color2=34
 
-if hostname -f 2> /dev/null; then
+if hostname -f >& /dev/null; then
     H=`hostname -f`
 else
     H=`hostname`
@@ -134,12 +134,3 @@ function abbreviate_path {
   p=`echo $1 | sed 's#'$h'#~#' | sed 's#/# #g'`
   echo $p
 }
-
-# http://www-128.ibm.com/developerworks/linux/library/l-keyc2/
-if type -P keychain &>/dev/null; then
-    allkeys="$HOME/.ssh/*_rsa"
-    keys=
-    for key in $allkeys; do [ -f "$key" ] && keys="${keys} $key "; done
-    eval $(keychain --timeout ${KEYCHAIN_TIMEOUT:-15} --nogui --eval $keys)
-fi
-
