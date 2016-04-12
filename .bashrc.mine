@@ -134,3 +134,7 @@ function abbreviate_path {
   p=`echo $1 | sed 's#'$h'#~#' | sed 's#/# #g'`
   echo $p
 }
+
+if [ -r ~/.keychain/$HOSTNAME-sh ]; then 
+    . ~/.keychain/$HOSTNAME-sh           
+fi
