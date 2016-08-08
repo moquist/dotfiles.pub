@@ -1,7 +1,3 @@
-[user]
-	name = Matt Oquist
-	email = moquist@majen.net
-
 [core]
 	pager = less -FXRS
 
