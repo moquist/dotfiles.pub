@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+set -e
+if [ "$DEBUG" ]; then set -x; fi
+
 domain="$1"
 hostname="$2"
 
