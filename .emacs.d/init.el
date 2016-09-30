@@ -22,6 +22,7 @@
                        clojure-mode
                        clojure-mode-extra-font-locking
                        better-defaults
+                       cider
                        paredit))
 (dolist (p package-list)
   (when (not (package-installed-p p))
