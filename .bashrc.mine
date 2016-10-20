@@ -120,7 +120,7 @@ type -P gvim &>/dev/null && alias gvim="gvim -reverse"
 #    git config --path core.pager "less -FXRS"
 #}
 
-export LESS=-isrXF
+export LESS=-isXFRQ
 
 mpc_bashrc="$HOME/.bashrc.mpc"
 [ -f "$mpc_bashrc" ] && source $mpc_bashrc
