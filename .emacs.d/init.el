@@ -62,6 +62,7 @@
 
 ;; auto indent new lines
 (define-key global-map (kbd "RET") 'newline-and-indent)
+(evil-define-key 'insert prog-mode-map (kbd "RET") #'evil-ret-and-indent)
 
 (setq-default show-trailing-whitespace t)
 
