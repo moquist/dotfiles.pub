@@ -23,7 +23,9 @@
                        clojure-mode-extra-font-locking
                        better-defaults
                        cider
-                       paredit))
+                       paredit
+                       s))
+
 (dolist (p package-list)
   (when (not (package-installed-p p))
     (package-install p)))
@@ -71,7 +73,8 @@
 (column-number-mode)
 
 (load-library "clj-repl")
+;; (load-library "~/.emacs.d/$HOSTNAME")
 (load "emacs.local" t)
 
 (add-to-list 'custom-theme-load-path "~/.solarized")
-(load-theme 'solarized t)
+;; (load-theme 'solarized t)
