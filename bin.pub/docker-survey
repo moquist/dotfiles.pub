@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+CONTAINER_BASE="$1"
+
+if [ ! "$CONTAINER_BASE" ]; then
+    echo "Missing container base, gotta know which ones to look at."
+    exit 1
+fi
+
+for c in $(docker ps | grep "$CONTAINER_BASE" | awk '{print $NF}'); do 
+    docker logs --tail=100 $c; echo; echo $c; echo; read; 
+done
