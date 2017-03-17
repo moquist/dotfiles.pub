@@ -76,5 +76,7 @@
 ;; (load-library "~/.emacs.d/$HOSTNAME")
 (load "emacs.local" t)
 
+(global-linum-mode t)
+
 (add-to-list 'custom-theme-load-path "~/.solarized")
 ;; (load-theme 'solarized t)
