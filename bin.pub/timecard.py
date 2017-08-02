@@ -44,6 +44,7 @@ for line in fileinput.input():
         break
     if (re.match("^ +", line) or re.match ("^$", line)):
         continue
+    print "Parsing...", line.rstrip()
     (state, datestr) = re.split(": ", line.rstrip(), maxsplit=1)
 
     state = state.lower()
