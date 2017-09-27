@@ -5,3 +5,4 @@
 (gtk_accel_path "<Actions>/mail/mail-previous" "k")
 (gtk_accel_path "<Actions>/mail/mail-reply-all" "a")
 (gtk_accel_path "<Actions>/mail/mail-reply-sender" "r")
+(gtk_accel_path "<Actions>/mail/mail-forward" "f")
