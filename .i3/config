@@ -10,10 +10,11 @@
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
 set $mod Mod4
+font pango:DejaVu Sans Mono 8
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below. ISO 10646 = Unicode
-font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
+#font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
 # The font above is very space-efficient, that is, it looks good, sharp and
 # clear in small sizes. However, if you need a lot of unicode glyphs or
 # right-to-left text rendering, you should instead use pango for rendering and
@@ -154,8 +155,20 @@ bar {
         status_command i3status
 }
 
-# switch to natural scrolling
-exec_always --no-startup-id xinput set-button-map $(xinput --list --id-only 'Atmel maXTouch Touchpad') 1 2 3 5 4 6 7 8 9 10 11 12
-exec_always --no-startup-id xinput set-button-map $(xinput --list --id-only 'Microsoft Microsoft 3-Button Mouse with IntelliEye(TM)') 1 2 3 5 4 6 7
+exec_always --no-startup-id /home/moquist/bin.pub/pointing-device-config
+exec_always --no-startup-id xrandr --output eDP-1 --mode 1920x1080 --dpi 144
+
+# from Aaron
+exec --no-startup-id xset dpms 600
+exec --no-startup-id xautolock -time 10 -locker i3lock
+#exec_always xrandr --output HDMI-1 --auto --left-of eDP-1
+#exec_always xrandr --output eDP-1 --mode 1920x1080 --dpi 141
+#exec /usr/bin/gnome-settings-daemon
+#exec /usr/bin/gnome-panel
+exec --no-startup-id nm-applet
+exec --no-startup-id indicator-sound-switcher
+exec --no-startup-id start-pulseaudio-x11
+#exec_always xmodmap ~/.xmodmaprc
+#exec_always xrdb -merge ~/.Xdefaults
 
 force_focus_wrapping yes
