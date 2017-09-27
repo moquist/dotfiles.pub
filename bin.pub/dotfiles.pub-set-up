@@ -19,6 +19,9 @@ ln -vsf ~/$repo/.i3/config ~/.i3/
 mkdir -p ~/.config/LightTable/settings/
 ln -vsf ~/$repo/.config/LightTable/settings/* ~/.config/LightTable/settings/
 
+mkdir -p ~/.config/evolution
+ln -vsf ~/$repo/.config/evolution/accels ~/.config/evolution
+
 mkdir -p ~/.ncmpc
 ln -vsf ~/$repo/.ncmpc/keys ~/.ncmpc/
 

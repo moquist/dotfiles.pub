@@ -1,0 +1,7 @@
+(gtk_accel_path "<Actions>/mail/mail-archive" "y")
+(gtk_accel_path "<Actions>/mail/mail-delete" "<Shift>d")
+(gtk_accel_path "<Actions>/mail/mail-message-new" "c")
+(gtk_accel_path "<Actions>/mail/mail-next" "j")
+(gtk_accel_path "<Actions>/mail/mail-previous" "k")
+(gtk_accel_path "<Actions>/mail/mail-reply-all" "a")
+(gtk_accel_path "<Actions>/mail/mail-reply-sender" "r")
