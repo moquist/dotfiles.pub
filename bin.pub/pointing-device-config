@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -ex
+set -x
 
 TOUCHPAD_NAME="DLL06E5:01 06CB:7A13 Touchpad"
 MOUSE_NAME='Microsoft Microsoft 3-Button Mouse with IntelliEye(TM)'
@@ -12,6 +12,7 @@ TOUCHPAD_ID=$(xinput --list --id-only "$TOUCHPAD_NAME");
 SCROLLING_DISTANCE_PROP_ID=$(xinput list-props $TOUCHPAD_ID | grep 'Synaptics Scrolling Distance' | sed 's/^[^(]\+(\([0-9]\+\)).*$/\1/')
 
 # natural scrolling
+# Negate the scrolling values.
 xinput set-prop $TOUCHPAD_ID $SCROLLING_DISTANCE_PROP_ID -30 -30
 
 # three-finger-tap for middle-click
