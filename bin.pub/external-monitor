@@ -1,0 +1,5 @@
+ #!/usr/bin/env bash
+
+ xrandr --query
+ xrandr --auto
+ xrandr --output HDMI-1 --right-of eDP-1
