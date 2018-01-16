@@ -1,5 +1,8 @@
+; evolution GtkAccelMap rc-file         -*- scheme -*-
+; this file is an automated accelerator map dump
+;
 (gtk_accel_path "<Actions>/mail/mail-archive" "<Primary>y")
-(gtk_accel_path "<Actions>/mail/mail-message-new" "<Primary>c")
-(gtk_accel_path "<Actions>/mail/mail-next" "j")
-(gtk_accel_path "<Actions>/mail/mail-previous" "k")
+(gtk_accel_path "<Actions>/mail/mail-previous" "<Primary>k")
+(gtk_accel_path "<Actions>/mail/mail-next" "<Primary>j")
 (gtk_accel_path "<Actions>/mail/mail-reply-all" "<Primary><Shift>a")
+(gtk_accel_path "<Actions>/mail/mail-message-new" "<Primary>c")
