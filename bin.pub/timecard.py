@@ -38,6 +38,7 @@ last_stop_str = ""
 first_starttime = 0
 first_start_str = ""
 stoptime = 0
+daybuckets = {}
 
 for line in fileinput.input():
     if (re.match("^# *time logged$", line)):
@@ -52,13 +53,18 @@ for line in fileinput.input():
         raise Exception("stop-stop, or start-start in input")
     start_or_stop = state
 
-    t = time.mktime(datetime.datetime.strptime(datestr, "%a %b %d %H:%M:%S %Z %Y").timetuple())
+    dt = datetime.datetime.strptime(datestr, "%a %b %d %H:%M:%S %Z %Y")
+    daybucket = dt.date()
+    t = time.mktime(dt.timetuple())
     if (state == "stop"):
         stoptime = t
         if (last_stoptime == 0):
             last_stoptime = t
             last_stop_str = datestr
     else:
+        if daybucket not in daybuckets:
+            daybuckets[daybucket] = 0
+        daybuckets[daybucket] += (stoptime - t)
         total_worked += (stoptime - t)
         first_starttime = t
         first_start_str = datestr
@@ -67,5 +73,7 @@ print "Hours worked: ", (total_worked / 3600.0)
 print "Hours not-worked: ", (((last_stoptime - first_starttime) - total_worked) / 3600.0)
 print "Started: ", first_start_str
 print "Ended: ", last_stop_str
+for daybucket in sorted(daybuckets.keys()):
+    print "Day bucket: ", daybucket, (daybuckets[daybucket] / 3600)
 
 
