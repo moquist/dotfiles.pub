@@ -1,3 +1,0 @@
-# After you make changes:
-# sudo dpkg-reconfigure keyboard-configuration
-XKBOPTIONS="ctrl:nocaps,altwin:swap_alt_win"
