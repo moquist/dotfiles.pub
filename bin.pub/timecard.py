@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # This is useful to take my records of the day and turn it into the numbers
 # I need to fill out a timecard.
 #

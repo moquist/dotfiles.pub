@@ -140,6 +140,8 @@ function abbreviate_path {
 if [ -r ~/.keychain/$HOSTNAME-sh ]; then 
     . ~/.keychain/$HOSTNAME-sh           
 fi
+ALLKEYS=~/.ssh/id_rsa
 
 #export GIT_AUTHOR_NAME="Matt Oquist"
 #export GIT_AUTHOR_EMAIL="moquist@majen.net"
+export TERMINAL=gnome-terminal

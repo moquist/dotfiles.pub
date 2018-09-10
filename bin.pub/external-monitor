@@ -2,4 +2,8 @@
 
 xrandr --query
 xrandr --auto
+# might need to pick a different name for the mode, when calling --newmode
+xrandr --newmode $(gtf 1920 1080 60 | grep Modeline | sed 's/^ *Modeline //')
+xrandr --addmode eDP-1 1920x1080_60.00
+xrandr --output eDP-1 --mode 1920x1080_60.00 --dpi 144
 xrandr --output HDMI-1 --right-of eDP-1

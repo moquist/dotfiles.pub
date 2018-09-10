@@ -4,17 +4,21 @@ set -x
 
 TOUCHPAD_NAME="DLL06E5:01 06CB:7A13 Touchpad"
 MOUSE_NAME='Microsoft Microsoft 3-Button Mouse with IntelliEye(TM)'
+MOUSE_ID=$(xinput --list --id-only "$MOUSE_NAME")
 
 # switch to natural scrolling
-xinput set-button-map $(xinput --list --id-only "$MOUSE_NAME") 1 2 3 5 4 6 7
+#xinput set-button-map $(xinput --list --id-only "$MOUSE_NAME") 1 2 3 5 4 6 7
+#xinput set-button-map $(xinput --list --id-only "$MOUSE_NAME") 1 2 3 5 4 6 7
+MOUSE_NATURAL_SCROLLING_PROP_ID=$(xinput list-props $MOUSE_ID | grep 'Natural Scrolling Enabled (' | sed 's/^[^(]\+(\([0-9]\+\)).*$/\1/')
+xinput set-prop $MOUSE_ID $MOUSE_NATURAL_SCROLLING_PROP_ID 1
 
-TOUCHPAD_ID=$(xinput --list --id-only "$TOUCHPAD_NAME");
-SCROLLING_DISTANCE_PROP_ID=$(xinput list-props $TOUCHPAD_ID | grep 'Synaptics Scrolling Distance' | sed 's/^[^(]\+(\([0-9]\+\)).*$/\1/')
+#TOUCHPAD_ID=$(xinput --list --id-only "$TOUCHPAD_NAME");
+#SCROLLING_DISTANCE_PROP_ID=$(xinput list-props $TOUCHPAD_ID | grep 'Synaptics Scrolling Distance' | sed 's/^[^(]\+(\([0-9]\+\)).*$/\1/')
 
 # natural scrolling
 # Negate the scrolling values.
-xinput set-prop $TOUCHPAD_ID $SCROLLING_DISTANCE_PROP_ID -30 -30
+#xinput set-prop $TOUCHPAD_ID $SCROLLING_DISTANCE_PROP_ID -30 -30
 
 # three-finger-tap for middle-click
 # xinput equivalent: Synaptics Tap Action (313):   2, 3, 0, 0, 1, 3, 2
-synclient TapButton3=2
+#synclient TapButton3=2
