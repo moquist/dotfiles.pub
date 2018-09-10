@@ -64,3 +64,6 @@
 [user]
 	name = Matt Oquist
 	email = moquist@majen.net
+[credential]
+	helper = !aws codecommit credential-helper $@
+	UseHttpPath = true
