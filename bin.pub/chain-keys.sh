@@ -1,10 +1,14 @@
 #!/usr/bin/env bash
 
+set -e
+if [ "$DEBUG" ]; then set -x; fi
+
+ALLKEYS=${ALLKEYS:-"$HOME/.ssh/*_rsa"}
+
 # http://www-128.ibm.com/developerworks/linux/library/l-keyc2/
 if type -P keychain &>/dev/null; then
-    allkeys="$HOME/.ssh/*_rsa"
     keys=
-    for key in $allkeys; do [ -f "$key" ] && keys="${keys} $key "; done
+    for key in $ALLKEYS; do [ -f "$key" ] && keys="${keys} $key "; done
     eval $(keychain --timeout ${KEYCHAIN_TIMEOUT:-15} --nogui --eval $keys)
 fi
 
