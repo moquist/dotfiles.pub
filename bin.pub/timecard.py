@@ -46,7 +46,13 @@ for line in fileinput.input():
     if (re.match("^ +", line) or re.match ("^$", line)):
         continue
     print "Parsing...", line.rstrip()
-    (state, datestr) = re.split(": ", line.rstrip(), maxsplit=1)
+    #(state, datestr, comment) = re.split(": ", line.rstrip(), maxsplit=1)
+    splitline = re.split(": ", line.rstrip(), maxsplit=2)
+    state = splitline[0]
+    datestr = splitline[1]
+    comment = ""
+    if len(splitline) > 2:
+        comment = splitline[2]
 
     state = state.lower()
     if (start_or_stop == state):
@@ -54,7 +60,7 @@ for line in fileinput.input():
     start_or_stop = state
 
     dt = datetime.datetime.strptime(datestr, "%a %b %d %H:%M:%S %Z %Y")
-    daybucket = dt.date()
+    daybucket = str(dt.date()) + " " + comment
     t = time.mktime(dt.timetuple())
     if (state == "stop"):
         stoptime = t
