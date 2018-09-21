@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+which ssl-cert-check >& /dev/null || >&2 echo ERROR: unable to find ssl-cert-check
+
+EXPIRY_DAYS_WARNING=21
+
+for host in $TLS_CERT_HOSTS; do
+    ssl-cert-check -s $host -p 443 -x $EXPIRY_DAYS_WARNING -b
+done
