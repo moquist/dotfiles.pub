@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+set -e
+if [ "$DEBUG" ]; then set -x; fi
+
+NEGATIVE_EXIT_1=${NEGATIVE_EXIT_1:-};
+
+PROBABILITY=$1; shift
+
+RAND_MAX=32767
+
+if [ ! "$PROBABILITY" ]; then
+    2>&1 echo "Error: Missing PROBABILITY argument, must be (<= 1 PROBABILITY 100)"
+    exit 2
+fi
+
+if [ $PROBABILITY -lt 1 ]; then
+    2>&1 echo "Error: PROBABILITY argument too bitty, must be (<= 1 PROBABILITY 100)"
+    exit 2
+fi
+
+if [ $PROBABILITY -gt 100 ]; then
+    2>&1 echo "Error: PROBABILITY argument too biggy, must be (<= 1 PROBABILITY 100)"
+    exit 2
+fi
+
+if [ $PROBABILITY -gt $((100 * $RANDOM / $RAND_MAX)) ]; then
+    # Yep!
+    exec "$@"
+else
+    if [ "$NEGATIVE_EXIT_1" ]; then
+        exit 1
+    fi
+fi
