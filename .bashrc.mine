@@ -124,6 +124,16 @@ type -P gvim &>/dev/null && alias gvim="gvim -reverse"
 
 export LESS=-isXFRQ
 
+if [ "$SSH_AUTH_SOCK" ] && [ -S "$SSH_AUTH_SOCK" ] && [ "$SSH_AUTH_SOCK" != ~/.ssh/auth_sock ]; then
+    ln -sf "$SSH_AUTH_SOCK" ~/.ssh/auth_sock
+fi
+
+if [ -L "~/.ssh/auth_sock" ] && [ -S "~/.ssh/auth_sock" ]; then
+    export SSH_AUTH_SOCK=~/.ssh/auth_sock
+fi
+
+
+
 mpc_bashrc="$HOME/.bashrc.mpc"
 [ -f "$mpc_bashrc" ] && source $mpc_bashrc
 bashrc_local="$HOME/.bashrc.local.${HOSTNAME}"
