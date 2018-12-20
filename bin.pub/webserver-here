@@ -2,8 +2,6 @@
 # Start a short-term Web server in the current directory.
 # Port number may be specified, defaults to 8888.
 
-CMD_DIR=$(readlink -e $(dirname "$0"))
-
 port=$1
 
 if [ ! "$port" ]; then
@@ -11,4 +9,4 @@ if [ ! "$port" ]; then
     port=8888
 fi
 
-python "$CMD_DIR/SimpleHTTPServer-promiscuous.py" $port
+python -m SimpleHTTPServer $port
