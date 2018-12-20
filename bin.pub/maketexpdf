@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Turn a .tex file into a PDF, and open it
 
 texfile=${1%.tex}
@@ -7,4 +7,4 @@ latex-wordcount.sh $texfile-wc.tex
 pdflatex $texfile-wc.tex
 pdflatex $texfile-wc.tex
 mv $texfile-wc.pdf $texfile.pdf
-open-matt $texfile.pdf
+#open-matt $texfile.pdf
