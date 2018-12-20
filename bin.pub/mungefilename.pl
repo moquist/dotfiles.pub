@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl
 # $Id: mungefilename.pl,v 1.1 2007/02/22 19:53:01 moquist Exp moquist $
 
 use Getopt::Std;
