@@ -29,6 +29,13 @@ floating_modifier $mod
 bindsym $mod+Return exec gnome-terminal
 #bindsym $mod+Return exec xterm
 
+# mpc controls
+bindsym $mod+s exec mpc toggle
+bindsym $mod+Control+k exec mpc volume +3
+bindsym $mod+Control+j exec mpc volume -3
+bindsym $mod+Control+h exec mpc prev
+bindsym $mod+Control+l exec mpc next
+
 # kill focused window
 bindsym $mod+Shift+q kill
 
@@ -78,7 +85,7 @@ bindsym $mod+v split v
 bindsym $mod+f fullscreen
 
 # change container layout (stacked, tabbed, toggle split)
-bindsym $mod+s layout stacking
+#bindsym $mod+s layout stacking
 bindsym $mod+t layout tabbed
 bindsym $mod+e layout toggle split
 
@@ -165,6 +172,7 @@ exec_always --no-startup-id xrandr --output eDP-1 --mode 1920x1080 --dpi 144
 # from Aaron
 exec --no-startup-id xset dpms 600
 exec --no-startup-id /home/moquist/bin.pub/xlocker
+exec --no-startup-id /usr/bin/env mpd
 #exec_always xrandr --output HDMI-1 --auto --left-of eDP-1
 #exec_always xrandr --output eDP-1 --mode 1920x1080 --dpi 141
 exec /usr/bin/gnome-settings-daemon
