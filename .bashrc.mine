@@ -24,7 +24,7 @@ type -P setxkbmap &>/dev/null && alias dvorak='echo setxkbmap dvorak'
 type -P setxkbmap &>/dev/null && alias querty='echo setxkbmap us'
 type -P virsh &>/dev/null && alias virsh='virsh --connect qemu:///system'
 alias invoices='find /home/moquist/docs/majen.net-documents/clients/ | grep invoice  | sed 's/^.*invoice-//' | sort -n | tail -n 10'
-alias ls="ls -ltr"
+alias ls="ls -l"
 
 function grep() { command grep --directories=skip "$@"; }
 
