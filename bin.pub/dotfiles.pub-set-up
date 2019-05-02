@@ -22,6 +22,9 @@ ln -vsf ~/$repo/.config/evolution/accels ~/.config/evolution
 mkdir -p ~/.ncmpc
 ln -vsf ~/$repo/.ncmpc/keys ~/.ncmpc/
 
+mkdir -p ~/.docker
+ln -vsf ~/$repo/.docker/config.json ~/.docker/
+
 ## clj-repl
 cljrepldir=~/.clj-repl
 if [[ ! -d $cljrepldir ]]; then
