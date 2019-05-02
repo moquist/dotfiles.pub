@@ -159,6 +159,8 @@ else
 fi
 ALLKEYS=~/.ssh/id_rsa
 
+source ~/.keychain/${HOSTNAME}-sh
+
 #export GIT_AUTHOR_NAME="Matt Oquist"
 #export GIT_AUTHOR_EMAIL="moquist@majen.net"
 export TERMINAL=gnome-terminal
