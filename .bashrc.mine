@@ -124,11 +124,16 @@ type -P gvim &>/dev/null && alias gvim="gvim -reverse"
 
 export LESS=-isXFRQ
 
-if [ "$SSH_AUTH_SOCK" ] && [ -S "$SSH_AUTH_SOCK" ] && [ "$SSH_AUTH_SOCK" != ~/.ssh/auth_sock ]; then
+# https://stackoverflow.com/questions/20701757/tmux-setting-environment-variables-for-sessions
+if [ ! "$TMUX" ] \
+    && [ "$SSH_AUTH_SOCK" ] \
+    && [ -S "$SSH_AUTH_SOCK" ] \
+    && [ "$SSH_AUTH_SOCK" != ~/.ssh/auth_sock ]; then
     ln -sf "$SSH_AUTH_SOCK" ~/.ssh/auth_sock
 fi
 
-if [ -L "~/.ssh/auth_sock" ] && [ -S "~/.ssh/auth_sock" ]; then
+#if [ -L "~/.ssh/auth_sock" ] && [ -S "~/.ssh/auth_sock" ]; then
+if [ "$TMUX" ]; then
     export SSH_AUTH_SOCK=~/.ssh/auth_sock
 fi
 
