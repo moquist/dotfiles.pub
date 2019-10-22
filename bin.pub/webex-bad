@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+# Sometimes WebEx works great in Linux. Sometimes it says "You can't start or
+# join this Webex meeting because it's enabled for Webex Meetings video
+# conferencing, which isn't supported by your browser, browser version, or
+# operating system. Contact your administrator for more information."
+#
+# I haven't been able to figure out what is different. Maybe it's bad DNS luck!
+#
+# This script does a quick ping to whatever $WEBEX_HOST resolves to right now,
+# and logs the result. This way maybe I can figure out if there are some WebEx
+# servers that work OK and some others that typically don't.
+
+case "$1" in
+  bad|good) ;;
+  *) echo >&2 "bad or good";
+      exit 1;
+      ;;
+esac
+
+echo $1 $(ping -c1 $WEBEX_HOST | grep PING | awk '{print $3}' | sed 's/[)(]//g') $(date) >> $WEBEX_IP_LOG
