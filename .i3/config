@@ -34,7 +34,7 @@ bindsym $mod+Shift+s exec scrot -u /home/moquist/scrot.png
 bindsym $mod+s exec mpc toggle
 bindsym $mod+Control+k exec mpc volume +3
 bindsym $mod+Control+j exec mpc volume -3
-bindsym $mod+Control+h exec mpc prev
+bindsym $mod+Control+h exec mpc cdprev
 bindsym $mod+Control+l exec mpc next
 
 # kill focused window
