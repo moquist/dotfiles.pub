@@ -159,7 +159,9 @@ else
 fi
 ALLKEYS=~/.ssh/id_rsa
 
-source ~/.keychain/${HOSTNAME}-sh
+if [ -f ~/.keychain/${HOSTNAME}-sh ]; then
+    source ~/.keychain/${HOSTNAME}-sh
+fi
 
 #export GIT_AUTHOR_NAME="Matt Oquist"
 #export GIT_AUTHOR_EMAIL="moquist@majen.net"
