@@ -9,4 +9,4 @@ if [ ! "$port" ]; then
     port=8888
 fi
 
-python -m SimpleHTTPServer $port
+python -m SimpleHTTPServer $port || python -m http.server $port
