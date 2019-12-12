@@ -30,7 +30,7 @@ cljrepldir=~/.clj-repl
 if [[ ! -d $cljrepldir ]]; then
     git clone https://github.com/moquist/clj-repl "$cljrepldir"
 fi
-git -C "$cljrepldir" pull # hmm. pull?
+(cd "$cljrepldir"; git pull --rebase)
 mkdir -p ~/.emacs.d/moquist
 ln -vsf "$cljrepldir"/clj-repl.el ~/.emacs.d/moquist/
 ln -vsf "$cljrepldir"/clojure-repl ~/bin.pub/
@@ -83,4 +83,4 @@ solarizeddir=~/.solarized
 if [[ ! -d $solarizeddir ]]; then
     git clone https://github.com/sellout/emacs-color-theme-solarized "$solarizeddir"
 fi
-git -C "$solarizeddir" pull # hmm. pull?
+(cd "$solarizeddir"; git pull --rebase)
