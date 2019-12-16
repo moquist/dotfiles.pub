@@ -7,22 +7,31 @@
 #
 # Then I cat that file into this script.
 #
-# Lines beginning with a space are ignored as comments.
-# Lines matching ^# *time logged$ cause remaining input to be ignored.
+# 1. Lines beginning with a space are ignored as comments.
+# 2. Lines matching ^# *time logged$ cause remaining input to be ignored.
+# 3. 'start:' lines with ': suffixes' get separated out into separate buckets, like
+#    the CharageCode57.3 example below.
 
 # input like this:
+# -----------------------------------
 # stop: Fri Aug 29 20:34:55 EDT 2014
 # start: Fri Aug 29 19:14:52 EDT 2014
-#     - fed the chickens
+#     - fed the onions
 # stop: Fri Aug 29 19:04:55 EDT 2014
-# start: Fri Aug 29 18:04:52 EDT 2014
+# start: Fri Aug 29 18:04:52 EDT 2014: CharageCode57-3
+# stop: Thu Aug 28 17:04:55 EDT 2014
+# start: Thu Aug 28 16:04:52 EDT 2014
 #    - designed a new space station
-
+#
 # ... yields output like this:
-# Hours worked:  2.335
-# Hours not-worked:  0.165833333333
-# Started:  Fri Aug 29 18:04:52 EDT 2014
+# -----------------------------------
+# Hours worked:  3.33583333333
+# Hours not-worked:  25.165
+# Started:  Thu Aug 28 16:04:52 EDT 2014
 # Ended:  Fri Aug 29 20:34:55 EDT 2014
+# Day bucket:  2014-08-28  1.00083333333
+# Day bucket:  2014-08-29  1.33416666667
+# Day bucket:  2014-08-29 CharageCode57-3 1.00083333333
 #
 # TODO: implement a -r flag to read chronologically-ordered input
 
@@ -45,7 +54,7 @@ for line in fileinput.input():
         break
     if (re.match("^ +", line) or re.match ("^$", line)):
         continue
-    print "Parsing...", line.rstrip()
+    #print "Parsing...", line.rstrip()
     #(state, datestr, comment) = re.split(": ", line.rstrip(), maxsplit=1)
     splitline = re.split(": ", line.rstrip(), maxsplit=2)
     state = splitline[0]
