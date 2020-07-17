@@ -12,6 +12,7 @@
     ci = commit
     log1 = log --pretty=oneline --decorate
     rbu = rebase @{upstream}
+    rest = reset
 
     # Returns relative path to repo root ("cd up" in absurd git vernacular)
     root = rev-parse --show-cdup
