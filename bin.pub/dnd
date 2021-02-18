@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# https://wiki.archlinux.org/index.php/Dunst#Disable_dunst_temporarily
+
+case "$1" in
+    on|enable|yes) notify-send "DUNST_COMMAND_PAUSE"; echo "dunst notifications paused, probably." ;;
+    off|disable|no) notify-send "DUNST_COMMAND_RESUME"; echo "dunst notifications un-paused, probably." ;;
+    *) echo "You have all kinds of options, and you still got it wrong. Try again."; exit 1
+esac
