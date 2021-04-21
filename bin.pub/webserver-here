@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Start a short-term Web server in the current directory.
 # Port number may be specified, defaults to 8888.
 
