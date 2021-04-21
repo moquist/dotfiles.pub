@@ -18,7 +18,7 @@
 # start: Fri Aug 29 19:14:52 EDT 2014
 #     - fed the onions
 # stop: Fri Aug 29 19:04:55 EDT 2014
-# start: Fri Aug 29 18:04:52 EDT 2014: CharageCode57-3
+# start: Fri Aug 29 18:04:52 EDT 2014: ChargeCode57-3
 # stop: Thu Aug 28 17:04:55 EDT 2014
 # start: Thu Aug 28 16:04:52 EDT 2014
 #    - designed a new space station
@@ -50,39 +50,44 @@ stoptime = 0
 daybuckets = {}
 
 for line in fileinput.input():
-    if (re.match("^# *time logged$", line)):
-        break
-    if (re.match("^ +", line) or re.match ("^$", line)):
-        continue
-    #print "Parsing...", line.rstrip()
-    #(state, datestr, comment) = re.split(": ", line.rstrip(), maxsplit=1)
-    splitline = re.split(": ", line.rstrip(), maxsplit=2)
-    state = splitline[0]
-    datestr = splitline[1]
-    comment = ""
-    if len(splitline) > 2:
-        comment = splitline[2]
+    try:
+        if (re.match("^# *time logged$", line)):
+            break
+        if (re.match("^ +", line) or re.match ("^$", line)):
+            continue
+        #print "Parsing...", line.rstrip()
+        #(state, datestr, comment) = re.split(": ", line.rstrip(), maxsplit=1)
+        splitline = re.split(": ", line.rstrip(), maxsplit=2)
+        state = splitline[0]
+        datestr = splitline[1]
+        comment = ""
+        if len(splitline) > 2:
+            comment = splitline[2]
 
-    state = state.lower()
-    if (start_or_stop == state):
-        raise Exception("stop-stop, or start-start in input")
-    start_or_stop = state
+        state = state.lower()
+        if (start_or_stop == state):
+            raise Exception("stop-stop, or start-start in input")
+        start_or_stop = state
 
-    dt = datetime.datetime.strptime(datestr, "%a %b %d %H:%M:%S %Z %Y")
-    daybucket = str(dt.date()) + " " + comment
-    t = time.mktime(dt.timetuple())
-    if (state == "stop"):
-        stoptime = t
-        if (last_stoptime == 0):
-            last_stoptime = t
-            last_stop_str = datestr
-    else:
-        if daybucket not in daybuckets:
-            daybuckets[daybucket] = 0
-        daybuckets[daybucket] += (stoptime - t)
-        total_worked += (stoptime - t)
-        first_starttime = t
-        first_start_str = datestr
+        dt = datetime.datetime.strptime(datestr, "%a %b %d %H:%M:%S %Z %Y")
+        daybucket = str(dt.date()) + " " + comment
+        t = time.mktime(dt.timetuple())
+        if (state == "stop"):
+            stoptime = t
+            if (last_stoptime == 0):
+                last_stoptime = t
+                last_stop_str = datestr
+        else:
+            if daybucket not in daybuckets:
+                daybuckets[daybucket] = 0
+            daybuckets[daybucket] += (stoptime - t)
+            total_worked += (stoptime - t)
+            first_starttime = t
+            first_start_str = datestr
+    except:
+        print ("Unexpected error:", line)
+        raise
+
 
 print "Hours worked: ", (total_worked / 3600.0)
 print "Hours not-worked: ", (((last_stoptime - first_starttime) - total_worked) / 3600.0)
