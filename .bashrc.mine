@@ -171,3 +171,12 @@ fi
 #export GIT_AUTHOR_EMAIL="moquist@majen.net"
 export TERMINAL=gnome-terminal
 export TERM=xterm-256color
+
+function get-stack-output-value() {
+    STACK_NAME="$1"
+    OUTPUT_NAME="$2"
+    aws cloudformation describe-stacks --stack-name $STACK_NAME \
+        | jq ".Stacks[].Outputs[]|select(.OutputKey==\"$OUTPUT_NAME\").OutputValue" \
+        | sed 's/^"\(.*\)"$/\1/'
+}
+
