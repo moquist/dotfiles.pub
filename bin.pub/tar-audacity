@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# tar-audacity *.aup
+
+for aud in "$@"; do
+    base=${aud%%.aup}
+    datadir=${base}_data
+    tar czvf "$base.tgz" "$base.aup" "$datadir"
+done
