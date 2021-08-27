@@ -14,6 +14,7 @@ type -P cp &>/dev/null && alias cp="cp -v"
 
 type -P abcde &>/dev/null && alias abcde="abcde -x $*"
 type -P indent &>/dev/null && alias indent="indent -bli2 -br -ce -cli2 -i2 -bc"
+type -P date &>/dev/null && alias date="date \"+%a %b %d %H:%M:%S %Z %Y\""
 type -P mkisofs &>/dev/null && alias mkisofs="mkisofs -r"
 type -P figlet &>/dev/null && alias figlet="figlet -f roman"
 type -P netstat &>/dev/null && alias netstat-anp='netstat -anp'
