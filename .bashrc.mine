@@ -153,11 +153,6 @@ function abbreviate_path {
   echo $p
 }
 
-if [ -f ~/bin.pub/ssl-cert-checks ]; then
-    ~/bin.pub/ssl-cert-checks
-else
-    >&2 echo WARNING: cannot run ~/bin.pub/ssl-cert-checks
-fi
 ALLKEYS=~/.ssh/id_rsa
 
 if [ -f ~/.keychain/${HOSTNAME}-sh ]; then
