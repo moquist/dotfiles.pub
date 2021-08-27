@@ -49,7 +49,9 @@ first_start_str = ""
 stoptime = 0
 daybuckets = {}
 
+linenum=0
 for line in fileinput.input():
+    linenum += 1
     try:
         if (re.match("^# *time logged$", line)):
             break
@@ -85,7 +87,7 @@ for line in fileinput.input():
             first_starttime = t
             first_start_str = datestr
     except:
-        print ("Unexpected error:", line)
+        print ("Unexpected error:", line, linenum)
         raise
 
 
