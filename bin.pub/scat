@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+SCATS="zee bop ba zoo zow biza bam zip zap ka macha mow zaka zam"
+
+i=0
+for zipzap in $SCATS; do
+    SCATRAY[$i]="$zipzap"
+    i=$(( i + 1 ))
+done
+
+SIZE=${#SCATRAY[@]}
+SCAT_ENTHUSIASM=$((( $RANDOM % 10 ) + 5))
+
+INDEX=$(($RANDOM % $SIZE))
+echo ${SCATRAY[$INDEX]^}
+
+while [ $SCAT_ENTHUSIASM -gt 0 ]; do
+    INDEX=$(($RANDOM % $SIZE))
+    echo -n ${SCATRAY[$INDEX]}
+    SCAT_ENTHUSIASM=$(($SCAT_ENTHUSIASM - 1))
+
+    if [ $(($RANDOM % 3)) -ne 0 ]; then
+        echo -n "-"
+    elif [ $(($RANDOM % 20)) -eq 0 ]; then
+        echo
+    fi
+done
+
+# resolve any dangling hyphens and add pizzaz
+INDEX=$(($RANDOM % $SIZE))
+echo ${SCATRAY[$INDEX]}'!'
