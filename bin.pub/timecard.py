@@ -91,11 +91,11 @@ for line in fileinput.input():
         raise
 
 
-print "Hours worked: ", (total_worked / 3600.0)
-print "Hours not-worked: ", (((last_stoptime - first_starttime) - total_worked) / 3600.0)
-print "Started: ", first_start_str
-print "Ended: ", last_stop_str
+print (f"Hours worked: {(total_worked / 3600.0)}")
+print (f"Hours not-worked: {(((last_stoptime - first_starttime) - total_worked) / 3600.0)}")
+print (f"Started: {first_start_str}")
+print (f"Ended: {last_stop_str}")
 for daybucket in sorted(daybuckets.keys()):
-    print "Day bucket: ", daybucket, (daybuckets[daybucket] / 3600)
+    print (f"Day bucket: {daybucket}, {round((daybuckets[daybucket] / 3600), 3)}")
 
 
