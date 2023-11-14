@@ -53,6 +53,9 @@
     lol = log --oneline --graph --decorate
     olo = log "--pretty=format:%s" --decorate
 
+    # (Log, One Line) "Y" format for arbitrary other commit - compares HEAD vs given commit back to the merge point
+    yy = "!f() { git lol ^$(git merge-base HEAD $1)^@ HEAD $1; }; f"
+
 [merge]
 	tool = vimdiff
 
@@ -68,3 +71,10 @@
 [credential]
 	helper = !aws codecommit credential-helper $@
 	UseHttpPath = true
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+[init]
+	defaultBranch = main
