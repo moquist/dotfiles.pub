@@ -47,6 +47,7 @@ bindsym $mod+Shift+q kill
 # installed.
 #bindsym $mod+space exec --no-startup-id i3-dmenu-desktop
 bindsym $mod+space exec --no-startup-id dmenu_run
+#bindsym $mod+space exec rofi -show window
 
 # change focus
 bindsym $mod+h focus left
@@ -173,6 +174,7 @@ exec_always --no-startup-id xrandr --output eDP-1 --mode 1920x1080 --dpi 144
 
 # from Aaron
 exec --no-startup-id xset dpms 600
+exec --no-startup-id xcompmgr
 exec --no-startup-id /home/moquist/bin.pub/xlocker
 exec --no-startup-id /usr/bin/env mpd
 #exec_always xrandr --output HDMI-1 --auto --left-of eDP-1
