@@ -14,7 +14,6 @@ type -P cp &>/dev/null && alias cp="cp -v"
 
 type -P abcde &>/dev/null && alias abcde="abcde -x $*"
 type -P indent &>/dev/null && alias indent="indent -bli2 -br -ce -cli2 -i2 -bc"
-type -P date &>/dev/null && alias date="date \"+%a %b %d %H:%M:%S %Z %Y\""
 type -P mkisofs &>/dev/null && alias mkisofs="mkisofs -r"
 type -P figlet &>/dev/null && alias figlet="figlet -f roman"
 type -P netstat &>/dev/null && alias netstat-anp='netstat -anp'
@@ -116,6 +115,7 @@ type -P lintian &>/dev/null && alias lintian="LC_ALL=C lintian"
 type -P vi &>/dev/null && alias vi="LC_ALL=C vi"
 #type -P vim &>/dev/null && alias vim="LC_ALL=C vim" && alias vi="LC_ALL=C vim"
 type -P gvim &>/dev/null && alias gvim="gvim -reverse"
+type -P kubectl &>/dev/null && alias kubectl-ctx="kubectl config current-context"
 
 #type -P git &>/dev/null && {
 #    git config --global user.name "Matt Oquist"
@@ -176,3 +176,20 @@ function get-stack-output-value() {
         | sed 's/^"\(.*\)"$/\1/'
 }
 
+export MPD_HOST=0.0.0.0
+
+function secretsmanager-list() {
+    aws secretsmanager list-secrets | jq .
+}
+
+function secretsmanager-list-names {
+    aws secretsmanager list-secrets | jq .SecretList[].Name
+}
+
+function secretsmanager-get() {
+    aws secretsmanager get-secret-value --secret-id "$1"
+}
+
+function jwt-decode() {
+    jq -R 'split(".") | .[0],.[1] | @base64d | fromjson' <<< "$1"
+}
