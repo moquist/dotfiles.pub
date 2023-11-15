@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+level=${1:-25}
+
+max=$(cat /sys/class/backlight/intel_backlight/max_brightness)
+# Dell Precision 5510 laptop brightness range 0(off)-max
+scaled=$(( (level * max) / 100))
+echo scaled $scaled
+echo -n ${scaled} |sudo tee -a /sys/class/backlight/intel_backlight/brightness
+
+#dev=$(i2cdetect -l |grep "i915 gmbus dpb" |awk '{print $1}')
+## Dell U2715H monitor brightness range 0(dim)-100(max)
+#sudo ddccontrol dev:$(dev) -r 0x10 -w $level
