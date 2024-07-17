@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 # Turn a .tex file into a PDF, and open it
 
+if ! docker inspect tex2pdf; then
+    echo bad
+fi
+
 texfile=${1%.tex}
 cp $texfile.tex $texfile-wc.tex
 latex-wordcount.sh $texfile-wc.tex
