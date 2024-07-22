@@ -1,5 +1,5 @@
 [core]
-	pager = less -FXRS
+    pager = less -FXRS
 
 [color]
     branch = auto

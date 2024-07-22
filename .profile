@@ -19,3 +19,8 @@ fi
 if [ -d ~/bin ] ; then
     PATH=~/bin:"${PATH}"
 fi
+
+# for Zoom screen sharing to work
+# see https://community.zoom.com/t5/Meetings/Can-not-share-screen/m-p/136735
+# and https://askubuntu.com/questions/1407494/screen-share-not-working-in-ubuntu-22-04-in-all-platforms-zoom-teams-google-m
+XDG_SESSION_TYPE=X11

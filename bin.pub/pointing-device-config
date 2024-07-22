@@ -2,7 +2,6 @@
 
 set -x
 
-TOUCHPAD_NAME="DLL06E5:01 06CB:7A13 Touchpad"
 MOUSE_NAME='Microsoft Microsoft 3-Button Mouse with IntelliEye(TM)'
 MOUSE_ID=$(xinput --list --id-only "$MOUSE_NAME")
 

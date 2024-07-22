@@ -26,7 +26,8 @@ floating_modifier $mod
 
 # start a terminal
 #bindsym $mod+Return exec i3-sensible-terminal
-bindsym $mod+Return exec gnome-terminal
+#bindsym $mod+Return exec qterminal
+bindsym $mod+Return exec exo-open --launch TerminalEmulator
 bindsym $mod+Shift+s exec scrot -u /home/moquist/scrot.png
 #bindsym $mod+Return exec xterm
 
@@ -173,18 +174,18 @@ exec_always --no-startup-id xrandr --addmode eDP-1 1920x1080
 exec_always --no-startup-id xrandr --output eDP-1 --mode 1920x1080 --dpi 144
 
 # from Aaron
-exec --no-startup-id xset dpms 600
-exec --no-startup-id xcompmgr
-exec --no-startup-id /home/moquist/bin.pub/xlocker
-exec --no-startup-id /usr/bin/env mpd
-#exec_always xrandr --output HDMI-1 --auto --left-of eDP-1
-#exec_always xrandr --output eDP-1 --mode 1920x1080 --dpi 141
-exec /usr/bin/gnome-settings-daemon
-#exec /usr/bin/gnome-panel
-exec --no-startup-id nm-applet
-exec --no-startup-id indicator-sound-switcher
-exec --no-startup-id start-pulseaudio-x11
-#exec_always xmodmap ~/.xmodmaprc
-#exec_always xrdb -merge ~/.Xdefaults
+#exec --no-startup-id xset dpms 600
+#exec --no-startup-id xcompmgr
+#exec --no-startup-id /home/moquist/bin.pub/xlocker
+#exec --no-startup-id /usr/bin/env mpd
+##exec_always xrandr --output HDMI-1 --auto --left-of eDP-1
+##exec_always xrandr --output eDP-1 --mode 1920x1080 --dpi 141
+#exec /usr/bin/gnome-settings-daemon
+##exec /usr/bin/gnome-panel
+#exec --no-startup-id nm-applet
+#exec --no-startup-id indicator-sound-switcher
+#exec --no-startup-id start-pulseaudio-x11
+##exec_always xmodmap ~/.xmodmaprc
+##exec_always xrdb -merge ~/.Xdefaults
 
 force_focus_wrapping yes

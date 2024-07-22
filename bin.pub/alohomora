@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-source ~/.virtualenv/alohomora/bin/activate
-alohomora "$@"

@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
 
-clj -Sdeps '{:deps {nrepl/nrepl {:mvn/version "0.5.3"}}}' -m nrepl.cmdline
+type -P clj &> /dev/null && CLOJURE=clj || CLOJURE=clojure
+
+$CLOJURE -Sdeps '{:deps {nrepl/nrepl {:mvn/version "0.5.3"}}}' -m nrepl.cmdline

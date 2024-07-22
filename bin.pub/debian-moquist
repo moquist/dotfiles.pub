@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+
+sudo apt-get update
+
+sudo apt-get install \
+    abcde \
+    audacity \
+    direnv \
+    docker.io \
+    clojure \
+    bc \
+    ncal \
+    cups cups-client "foomatic-db" \
+    vim \
+    fzf \
+    gimp \
+    keychain \
+    gnome-screenshot \
+    golang-go \
+    hashalot \
+    htop \
+    iftop \
+    jq \
+    lame \
+    mpc \
+    mpd \
+    mosh \
+    ncmpc \
+    $(echo "ncurses-term provides supported terminfo for tmux with 256 colors, see https://decafbad.net/2021/10/09/tmux-and-vim-missing-tmux-256color-terminfo/" > /dev/null) \
+    ncurses-term \
+    net-tools \
+    neovim \
+    plasma-nm \
+    povray \
+    python3 \
+    python3-pip \
+    python3-venv \
+    qemu-system qemu-system-mips qemu-system-arm qemu-user-static binfmt-support \
+    redsocks \
+    ripgrep \
+    socat \
+    tmux \
+    i3 \
+    xcompmgr \
+    xinput
+
+sudo snap install curl
+sudo snap install jo
+sudo snap install slack
+# sudo snap install tmux --classic # this one stinks, why did I use it?
+sudo snap install yq
+#sudo systemctl enable cups
+#sudo systemctl start cups
+#sudo /usr/sbin/adduser moquist lpadmin
+#sudo apt autoremove
+
+if ! type -P aws >& /dev/null; then
+    # https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+    (
+        cd /tmp;
+        curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+        unzip awscliv2.zip
+        sudo ./aws/install
+    )
+fi
+
+if ! type -P bb >& /dev/null; then
+    # https://github.com/babashka/babashka#installation
+    (
+        cd /tmp;
+        rm install;
+        curl -sLO https://raw.githubusercontent.com/babashka/babashka/master/install
+        chmod 755 install
+        sudo ./install
+    )
+fi
+
+# https://github.com/nodesource/distributions?tab=readme-ov-file#debian-and-ubuntu-based-distributions
+# curl -fsSL https://deb.nodesource.com/setup_22.x -o nodesource_setup.sh
+# sudo -E bash nodesource_setup.sh
+# sudo apt-get install -y nodejs

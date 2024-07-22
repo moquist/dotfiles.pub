@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# pass a ns, get exec!
+n="$1"; shift
+kubectl exec -it -n $n $(kubectl get pods -n $n | grep -v NAME | awk '{print $1}') -- bash

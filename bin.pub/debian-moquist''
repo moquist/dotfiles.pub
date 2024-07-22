@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+sudo apt-get update
+
+sudo apt-get install \
+    abcde \
+    awscli \
+    audacity \
+    docker.io \
+    clojure \
+    bc \
+    ncal \
+    cups cups-client "foomatic-db" \
+    vim \
+    gimp \
+    keychain \
+    gnome-screenshot \
+    hashalot \
+    htop \
+    iftop \
+    lame \
+    mpc \
+    mpd \
+    mosh \
+    ncmpc \
+    neovim \
+    plasma-nm \
+    povray \
+    qemu-system qemu-system-mips qemu-system-arm qemu-user-static binfmt-support \
+    ripgrep \
+    i3 \
+    xcompmgr \
+    xinput \
+    xq \
+    yq
+
+sudo systemctl enable cups
+sudo systemctl start cups
+sudo /usr/sbin/adduser moquist lpadmin
+sudo apt autoremove
