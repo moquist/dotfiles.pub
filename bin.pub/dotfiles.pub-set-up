@@ -10,35 +10,11 @@ for item in bin.pub .profile .abcde.conf .clojure-repl.conf .gitignore .gitconfi
     ln -vsf ~/$repo/$item ~/
 done
 
-#mkdir -p ~/.emacs.d
-#ln -vsf ~/$repo/.emacs.d/init.el ~/.emacs.d/
-
-mkdir -p ~/.i3
-ln -vsf ~/$repo/.i3/config ~/.i3/
-
-mkdir -p ~/.config/autostart
-(
-    cd ~/.config/autostart;
-    for x in ~/$repo/.config/autostart/*; do
-        ln -vsf $x ./
-    done
-)
-
 mkdir -p ~/.ncmpc
 ln -vsf ~/$repo/.ncmpc/keys ~/.ncmpc/
 
 mkdir -p ~/.docker
 ln -vsf ~/$repo/.docker/config.json ~/.docker/
-
-## clj-repl
-cljrepldir=~/.clj-repl
-if [[ ! -d $cljrepldir ]]; then
-    git clone https://github.com/moquist/clj-repl "$cljrepldir"
-fi
-(cd "$cljrepldir"; git pull --rebase)
-mkdir -p ~/.emacs.d/moquist
-ln -vsf "$cljrepldir"/clj-repl.el ~/.emacs.d/moquist/
-ln -vsf "$cljrepldir"/clojure-repl ~/bin.pub/
 
 HOME=${HOME:-/home/moquist}
 cat > ~/.texlive.profile <<EOF
@@ -83,9 +59,3 @@ INSTALLER=$(/usr/bin/env ls */install-tl)
 $INSTALLER -profile ~/.texlive.profile
 )
 
-## emacs solarized theme
-solarizeddir=~/.solarized
-if [[ ! -d $solarizeddir ]]; then
-    git clone https://github.com/sellout/emacs-color-theme-solarized "$solarizeddir"
-fi
-(cd "$solarizeddir"; git pull --rebase)
