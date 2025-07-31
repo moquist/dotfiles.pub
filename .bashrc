@@ -115,4 +115,3 @@ fi
 
 # Load user-specific settings
 [ -r $HOME/.bashrc.mine ] && . $HOME/.bashrc.mine
-. "$HOME/.cargo/env"
