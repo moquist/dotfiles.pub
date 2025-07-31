@@ -23,6 +23,7 @@ type -P md5 &>/dev/null && alias passwd-gen='echo $RANDOM | md5 | cut -b $((($RA
 type -P setxkbmap &>/dev/null && alias dvorak='echo setxkbmap dvorak'
 type -P setxkbmap &>/dev/null && alias querty='echo setxkbmap us'
 type -P virsh &>/dev/null && alias virsh='virsh --connect qemu:///system'
+type -P nvim &>/dev/null && alias vim=nvim
 alias invoices='find /home/moquist/docs/majen.net-documents/clients/ | grep invoice  | sed 's/^.*invoice-//' | sort -n | tail -n 10'
 alias ls="ls -l"
 
