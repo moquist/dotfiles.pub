@@ -143,6 +143,8 @@ fi
 
 mpc_bashrc="$HOME/.bashrc.mpc"
 [ -f "$mpc_bashrc" ] && source $mpc_bashrc
+export MPC_FORMAT='%position% %id% %title% %track% %file%'
+
 bashrc_local="$HOME/.bashrc.local.${HOSTNAME}"
 [ -f "$bashrc_local" ] && source $bashrc_local || touch $bashrc_local
 
