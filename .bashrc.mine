@@ -197,7 +197,7 @@ function jwt-decode() {
     jq -R 'split(".") | .[0],.[1] | @base64d | fromjson' <<< "$1"
 }
 
-eval "$(direnv hook bash)"
+type -P direnv >&/dev/null && eval "$(direnv hook bash)"
 
 # https://github.com/go-jira/jira
 type -P jira &>/dev/null && eval "$(jira --completion-script-bash)" && alias jira="HTTP_PROXY=localhost:58888 jira"
